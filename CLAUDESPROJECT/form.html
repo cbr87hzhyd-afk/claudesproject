@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form — EMERGENCE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    #mandel-canvas { cursor: crosshair; display: block; width: 100%; }
+    .view-info {
+      display: flex;
+      gap: 1.5rem;
+      padding: 0.75rem 1.25rem;
+      border-top: 1px solid var(--border);
+      background: rgba(13,13,26,0.95);
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+    }
+    .view-info span { color: var(--accent); }
+    .render-status {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      padding: 0.5rem 0;
+    }
+  </style>
+</head>
+<body class="page-form">
+
+<nav>
+  <a class="nav-logo" href="index.html">EM<span>ERG</span>ENCE</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Overview</a></li>
+    <li><a href="life.html">Life</a></li>
+    <li><a href="form.html" class="active">Form</a></li>
+    <li><a href="mind.html">Mind</a></li>
+    <li><a href="cosmos.html">Cosmos</a></li>
+  </ul>
+</nav>
+
+<main>
+  <section class="hero">
+    <canvas class="hero-canvas" id="form-hero"></canvas>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Chapter 02 · Fractal Geometry</p>
+      <h1 class="hero-title"><em>Form</em></h1>
+      <p class="hero-sub">
+        Benoit Mandelbrot showed that the universe's geometry is not smooth, not Euclidean —
+        it is fractured, recursive, and infinitely self-similar.
+        A single equation encodes boundless complexity.
+      </p>
+    </div>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <section class="content">
+
+    <div class="section">
+      <p class="section-tag">Background</p>
+      <h2 class="section-title">The roughness of the world</h2>
+      <div class="prose">
+        <p>
+          "How long is the coastline of Britain?" Mandelbrot asked in 1967.
+          The answer, he showed, depends entirely on the length of your ruler.
+          Use a 100km ruler and you get one number. Use a 10km ruler and you get a longer number,
+          because you capture more of the bays and headlands. At 1km, longer still.
+          The coastline has <em>no well-defined length</em> — it is a <strong>fractal</strong>,
+          an object with a non-integer dimension.
+        </p>
+        <p>
+          The Mandelbrot set — defined by the iteration <em>z → z² + c</em> —
+          is the most complex object in mathematics arising from the simplest possible rule.
+          Its boundary has a fractal dimension of 2: it is so infinitely convoluted that
+          it fills area. Zoom in on any portion and you find self-similar structures,
+          but never exactly repeating — infinite variety within a bounded, deterministic system.
+        </p>
+        <p>
+          This is the nature of <strong>deterministic chaos</strong>: a system governed by
+          simple equations whose long-term behavior is sensitive to initial conditions —
+          and thus, practically unpredictable. Fractals are the geometry of chaos.
+        </p>
+      </div>
+
+      <div class="pullquote">
+        <p>"Clouds are not spheres, mountains are not cones, coastlines are not circles,
+        and bark is not smooth, nor does lightning travel in a straight line."</p>
+        <cite>— Benoit Mandelbrot, The Fractal Geometry of Nature (1982)</cite>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-tag">Interactive</p>
+      <h2 class="section-title">Navigate infinite complexity</h2>
+      <p class="prose" style="margin-bottom:0">
+        <strong>Click</strong> to zoom in. <strong>Right-click</strong> to zoom out.
+        Each click reveals structures that look like the whole but are subtly different.
+        You can zoom forever — the boundary never simplifies.
+      </p>
+
+      <div class="canvas-wrap">
+        <canvas id="mandel-canvas" height="500"></canvas>
+        <div class="view-info">
+          <div>Re: <span id="view-re">–2.5 to 1.0</span></div>
+          <div>Im: <span id="view-im">–1.25 to 1.25</span></div>
+          <div>Zoom: <span id="view-zoom">1×</span></div>
+          <div>Iterations: <span id="view-iter">256</span></div>
+        </div>
+        <div class="controls">
+          <button class="btn" id="btn-reset">Reset View</button>
+          <button class="btn" id="btn-julia">Toggle Julia Set</button>
+          <div class="spacer"></div>
+          <div class="slider-group">
+            <span>Detail</span>
+            <input type="range" id="iter-slider" min="64" max="512" value="256" step="32">
+            <span id="iter-val">256</span>
+          </div>
+          <p class="render-status" id="render-status"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-tag">Deeper</p>
+      <h2 class="section-title">Fractals in the world</h2>
+      <div class="prose">
+        <p>
+          Mandelbrot's insight was that <strong>roughness is not noise</strong> — it has structure.
+          The jagged silhouette of a mountain range looks similar at 1km and 100km scales.
+          Bronchial tubes in the lung branch with self-similar geometry to maximize surface area.
+          Neurons branch fractally to maximize connectivity within a bounded volume.
+        </p>
+        <p>
+          This is not coincidence. Fractal geometry solves real optimization problems.
+          A fractal coastline packs more interface between land and sea into less space.
+          A fractal vascular network delivers nutrients more efficiently. Evolution and physics
+          independently discover the same geometry because it is <em>optimal</em>.
+        </p>
+        <p>
+          The deepest implication: the universe's geometry at all scales — from the clustering
+          of galaxies to the branching of rivers to the folding of proteins — may be fractal,
+          self-similar, and governed by equations as simple as <strong>z → z² + c</strong>.
+          The complexity we see may be the inevitable bloom of simple iteration.
+        </p>
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<footer>
+  <p class="footer-logo">EMERGENCE</p>
+  <p>← <a href="life.html">Life</a> &nbsp;·&nbsp; <a href="mind.html">Mind →</a></p>
+</footer>
+
+<script>
+// ── Mandelbrot renderer ──────────────────────────────────────
+const canvas = document.getElementById('mandel-canvas');
+const ctx = canvas.getContext('2d');
+
+let view = { xMin: -2.5, xMax: 1.0, yMin: -1.25, yMax: 1.25 };
+let maxIter = 256;
+let juliaMode = false;
+let juliaC = { re: -0.7, im: 0.27 };
+let renderToken = 0;
+
+function resize() {
+  const w = canvas.parentElement.clientWidth || 900;
+  canvas.width = w;
+  // keep aspect ratio for view
+}
+
+function palette(t) {
+  // Smooth perceptually nice palette
+  const r = Math.round(9 * (1-t) * (1-t) * (1-t) * t * 255);
+  const g = Math.round(15 * (1-t) * (1-t) * t * t * 255);
+  const b = Math.round(8.5 * (1-t) * t * t * t * 255 + 40);
+  // Violet-blue-cyan palette
+  const h = t * 6.28318;
+  const sr = Math.round(128 + 127 * Math.sin(h * 2.5 + 0.0));
+  const sg = Math.round(128 + 127 * Math.sin(h * 2.5 + 2.1));
+  const sb = Math.round(128 + 127 * Math.sin(h * 2.5 + 4.2));
+  return [Math.min(255, r + sr * 0.3), Math.min(255, g + sg * 0.3), Math.min(255, b + sb * 0.6)];
+}
+
+function render() {
+  const token = ++renderToken;
+  const w = canvas.width;
+  const h = canvas.height;
+  const imgData = ctx.createImageData(w, h);
+  const d = imgData.data;
+
+  const status = document.getElementById('render-status');
+  status.textContent = 'Rendering…';
+
+  const xRange = view.xMax - view.xMin;
+  const yRange = view.yMax - view.yMin;
+
+  // Render in chunks to avoid blocking
+  let row = 0;
+  function chunk() {
+    if (token !== renderToken) return;
+    const end = Math.min(row + 20, h);
+    for (let py = row; py < end; py++) {
+      for (let px = 0; px < w; px++) {
+        const c_re = view.xMin + (px / w) * xRange;
+        const c_im = view.yMin + (py / h) * yRange;
+
+        let re, im, zre, zim;
+        if (juliaMode) {
+          zre = c_re; zim = c_im;
+          re = juliaC.re; im = juliaC.im;
+        } else {
+          zre = 0; zim = 0;
+          re = c_re; im = c_im;
+        }
+
+        let iter = 0;
+        while (zre*zre + zim*zim <= 4 && iter < maxIter) {
+          const tmp = zre*zre - zim*zim + re;
+          zim = 2*zre*zim + im;
+          zre = tmp;
+          iter++;
+        }
+
+        const i = (py * w + px) * 4;
+        if (iter === maxIter) {
+          d[i]=8; d[i+1]=8; d[i+2]=13; d[i+3]=255;
+        } else {
+          const log_zn = Math.log(zre*zre + zim*zim) / 2;
+          const nu = Math.log(log_zn / Math.LN2) / Math.LN2;
+          const smooth = (iter + 1 - nu) / maxIter;
+          const t = Math.max(0, Math.min(1, smooth));
+          const [r, g, b] = palette(t);
+          d[i]=r; d[i+1]=g; d[i+2]=b; d[i+3]=255;
+        }
+      }
+    }
+    row = end;
+    if (row < h) {
+      // Draw partial
+      ctx.putImageData(imgData, 0, 0, 0, row - 20, w, 20);
+      requestAnimationFrame(chunk);
+    } else {
+      ctx.putImageData(imgData, 0, 0);
+      status.textContent = '';
+      updateInfo();
+    }
+  }
+  chunk();
+}
+
+function updateInfo() {
+  const zoom = 3.5 / (view.xMax - view.xMin);
+  document.getElementById('view-re').textContent =
+    `${view.xMin.toFixed(4)} to ${view.xMax.toFixed(4)}`;
+  document.getElementById('view-im').textContent =
+    `${view.yMin.toFixed(4)} to ${view.yMax.toFixed(4)}`;
+  document.getElementById('view-zoom').textContent = zoom.toFixed(1) + '×';
+  document.getElementById('view-iter').textContent = maxIter;
+}
+
+function zoomTo(cx, cy, factor) {
+  const xRange = view.xMax - view.xMin;
+  const yRange = view.yMax - view.yMin;
+  const mx = view.xMin + cx * xRange;
+  const my = view.yMin + cy * yRange;
+  const newXR = xRange * factor;
+  const newYR = yRange * factor;
+  view.xMin = mx - newXR / 2;
+  view.xMax = mx + newXR / 2;
+  view.yMin = my - newYR / 2;
+  view.yMax = my + newYR / 2;
+}
+
+canvas.addEventListener('click', e => {
+  const cx = e.offsetX / canvas.width;
+  const cy = e.offsetY / canvas.height;
+  if (juliaMode) {
+    // Update julia C parameter
+    juliaC.re = view.xMin + cx * (view.xMax - view.xMin);
+    juliaC.im = view.yMin + cy * (view.yMax - view.yMin);
+  } else {
+    zoomTo(cx, cy, 0.35);
+  }
+  render();
+});
+
+canvas.addEventListener('contextmenu', e => {
+  e.preventDefault();
+  const cx = e.offsetX / canvas.width;
+  const cy = e.offsetY / canvas.height;
+  zoomTo(cx, cy, 2.5);
+  render();
+});
+
+document.getElementById('btn-reset').addEventListener('click', () => {
+  view = { xMin: -2.5, xMax: 1.0, yMin: -1.25, yMax: 1.25 };
+  render();
+});
+
+document.getElementById('btn-julia').addEventListener('click', function() {
+  juliaMode = !juliaMode;
+  this.textContent = juliaMode ? 'Mandelbrot Set' : 'Toggle Julia Set';
+  this.classList.toggle('on', juliaMode);
+  if (juliaMode) {
+    view = { xMin: -1.6, xMax: 1.6, yMin: -1.1, yMax: 1.1 };
+  } else {
+    view = { xMin: -2.5, xMax: 1.0, yMin: -1.25, yMax: 1.25 };
+  }
+  render();
+});
+
+document.getElementById('iter-slider').addEventListener('change', function() {
+  maxIter = +this.value;
+  document.getElementById('iter-val').textContent = maxIter;
+  render();
+});
+
+// ── Hero animation ───────────────────────────────────────────
+const heroCanvas = document.getElementById('form-hero');
+const hctx = heroCanvas.getContext('2d');
+
+function initHero() {
+  heroCanvas.width = heroCanvas.offsetWidth;
+  heroCanvas.height = heroCanvas.offsetHeight;
+  renderHero();
+}
+
+function renderHero() {
+  const w = heroCanvas.width, h = heroCanvas.height;
+  const img = hctx.createImageData(w, h);
+  const d = img.data;
+  // Render a zoomed/shifted Mandelbrot for the hero
+  const xMin = -0.748, xMax = -0.746;
+  const aspect = h / w;
+  const yRange = (xMax - xMin) * aspect;
+  const yMin = 0.1 - yRange/2, yMax = 0.1 + yRange/2;
+  const iter = 180;
+  for (let py = 0; py < h; py++) {
+    for (let px = 0; px < w; px++) {
+      const c_re = xMin + (px / w) * (xMax - xMin);
+      const c_im = yMin + (py / h) * yRange;
+      let zre = 0, zim = 0, i = 0;
+      while (zre*zre + zim*zim <= 4 && i < iter) {
+        const tmp = zre*zre - zim*zim + c_re;
+        zim = 2*zre*zim + c_im;
+        zre = tmp;
+        i++;
+      }
+      const idx = (py * w + px) * 4;
+      if (i === iter) {
+        d[idx]=7; d[idx+1]=7; d[idx+2]=13; d[idx+3]=255;
+      } else {
+        const t = i / iter;
+        d[idx]   = Math.round(128 + 127 * Math.sin(t * 20 + 3.5));
+        d[idx+1] = Math.round(128 + 127 * Math.sin(t * 20 + 5.6));
+        d[idx+2] = Math.round(128 + 127 * Math.sin(t * 20 + 0.5));
+        d[idx+3] = 255;
+      }
+    }
+  }
+  hctx.putImageData(img, 0, 0);
+}
+
+// ── Init ─────────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  resize();
+  render();
+  initHero();
+});
+
+window.addEventListener('resize', () => {
+  resize();
+  render();
+});
+</script>
+</body>
+</html>
