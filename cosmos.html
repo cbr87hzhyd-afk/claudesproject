@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cosmos — EMERGENCE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    #cosmos-canvas { background: #03030a; display: block; width: 100%; }
+    .timeline {
+      margin: 3rem 0;
+      position: relative;
+      padding-left: 2rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+    .timeline-item {
+      position: relative;
+      padding: 0 0 2.5rem 1.5rem;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -4px;
+      top: 6px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+    .timeline-time {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.35rem;
+    }
+    .timeline-event {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+    .timeline-desc {
+      font-size: 0.87rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body class="page-cosmos">
+
+<nav>
+  <a class="nav-logo" href="index.html">EM<span>ERG</span>ENCE</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Overview</a></li>
+    <li><a href="life.html">Life</a></li>
+    <li><a href="form.html">Form</a></li>
+    <li><a href="patterns.html">Patterns</a></li>
+    <li><a href="mind.html">Mind</a></li>
+    <li><a href="cosmos.html" class="active">Cosmos</a></li>
+  </ul>
+</nav>
+
+<main>
+  <section class="hero">
+    <canvas class="hero-canvas" id="cosmos-hero"></canvas>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Chapter 04 · Gravity &amp; Structure</p>
+      <h1 class="hero-title"><em>Cosmos</em></h1>
+      <p class="hero-sub">
+        The universe began as an almost perfectly uniform plasma.
+        Every galaxy, filament, and void you see today emerged from
+        quantum fluctuations smaller than an atom, amplified over 13.8 billion years
+        by the simplest force: gravity.
+      </p>
+    </div>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <section class="content">
+
+    <div class="section">
+      <p class="section-tag">Background</p>
+      <h2 class="section-title">Structure from nothing</h2>
+      <div class="prose">
+        <p>
+          The most striking fact about the large-scale universe is how <em>structured</em> it is —
+          and how that structure emerged from conditions that were, by cosmic standards,
+          <strong>almost perfectly smooth</strong>. The cosmic microwave background —
+          the afterglow of the Big Bang — varies in temperature by only one part in
+          100,000. Yet from those infinitesimal wrinkles, gravity assembled everything:
+          the first stars, galaxies, clusters, and the vast <em>cosmic web</em> of
+          filaments and voids that spans hundreds of millions of light-years.
+        </p>
+        <p>
+          This is gravitational emergence at the grandest scale. The rules are simple:
+          every mass attracts every other mass with a force proportional to their masses
+          and inversely proportional to the square of their distance. There is no
+          blueprint for a galaxy, no equation that says "form a spiral here." Yet spiral
+          galaxies form, reliably, across the observable universe — because they are
+          the <strong>inevitable attractor state</strong> of rotating, self-gravitating gas clouds.
+        </p>
+        <p>
+          Dark matter — whatever it is — amplified the process. Its gravity halos
+          provided the scaffolding around which ordinary matter condensed into the first
+          stars. Without it, the universe today might be a featureless fog.
+          <em>Form followed from force, without a designer.</em>
+        </p>
+      </div>
+
+      <div class="pullquote">
+        <p>"We are the local embodiment of a Cosmos grown to self-awareness.
+        We have begun to contemplate our origins — star stuff pondering the stars."</p>
+        <cite>— Carl Sagan, Cosmos (1980)</cite>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-tag">N-Body Simulation</p>
+      <h2 class="section-title">Watch structure form</h2>
+      <p class="prose" style="margin-bottom: 0">
+        A gravitational simulation of particle clouds. Watch as particles cluster,
+        orbit, and merge under mutual attraction. Click to add a massive attractor.
+      </p>
+
+      <div class="canvas-wrap">
+        <canvas id="cosmos-canvas" height="500"></canvas>
+        <div class="controls">
+          <button class="btn" id="btn-pause">⏸ Pause</button>
+          <button class="btn" id="btn-reset">Reset</button>
+          <button class="btn" id="btn-spiral">Spiral Galaxy</button>
+          <button class="btn" id="btn-collision">Collision</button>
+          <div class="spacer"></div>
+          <div class="slider-group">
+            <span>Gravity</span>
+            <input type="range" id="g-slider" min="1" max="20" value="8">
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat"><span class="stat-val" id="stat-bodies">0</span><span class="stat-lbl">Bodies</span></div>
+        <div class="stat"><span class="stat-val" id="stat-ke">0</span><span class="stat-lbl">Kinetic Energy</span></div>
+        <div class="stat"><span class="stat-val" id="stat-t">0</span><span class="stat-lbl">Time Steps</span></div>
+        <div class="stat"><span class="stat-val" id="stat-clusters">—</span><span class="stat-lbl">Mode</span></div>
+        <div class="stat"><span class="stat-val" id="stat-mergers">0</span><span class="stat-lbl">Mergers</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-tag">Timeline</p>
+      <h2 class="section-title">13.8 billion years of emergence</h2>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <p class="timeline-time">t = 10⁻³⁵ seconds</p>
+          <p class="timeline-event">Inflation</p>
+          <p class="timeline-desc">The universe expands exponentially, stretching quantum fluctuations to cosmic scales. These will become the seeds of all large-scale structure.</p>
+        </div>
+        <div class="timeline-item">
+          <p class="timeline-time">t = 380,000 years</p>
+          <p class="timeline-event">Recombination &amp; the CMB</p>
+          <p class="timeline-desc">The universe cools enough for protons and electrons to combine into hydrogen atoms. The universe becomes transparent; the cosmic microwave background is released.</p>
+        </div>
+        <div class="timeline-item">
+          <p class="timeline-time">t = 200 million years</p>
+          <p class="timeline-event">First Stars — Population III</p>
+          <p class="timeline-desc">Dark matter halos collapse first, drawing in hydrogen gas. The first massive, short-lived stars ignite, seeding the universe with heavy elements and ionizing radiation.</p>
+        </div>
+        <div class="timeline-item">
+          <p class="timeline-time">t = 1 billion years</p>
+          <p class="timeline-event">First Galaxies</p>
+          <p class="timeline-desc">Gravitational mergers and accretion build the first galaxies. Supermassive black holes grow at their centers, regulating star formation through energetic feedback.</p>
+        </div>
+        <div class="timeline-item">
+          <p class="timeline-time">t = 9.2 billion years</p>
+          <p class="timeline-event">Formation of the Solar System</p>
+          <p class="timeline-desc">A molecular cloud enriched by previous stellar generations collapses. Gravity, angular momentum, and chemistry arrange 70 elements into planets, moons, and a middling star.</p>
+        </div>
+        <div class="timeline-item">
+          <p class="timeline-time">t = 13.8 billion years</p>
+          <p class="timeline-event">The universe becomes aware of itself</p>
+          <p class="timeline-desc">On at least one planet, the emergent complexity of chemistry produced life, evolution produced brains, and brains produced the capacity to ask why the universe exists at all.</p>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<footer>
+  <p class="footer-logo">EMERGENCE</p>
+  <p>← <a href="mind.html">Mind</a> &nbsp;·&nbsp; <a href="index.html">Return to Overview →</a></p>
+</footer>
+
+<script>
+// ── N-body simulation ─────────────────────────────────────────
+const canvas = document.getElementById('cosmos-canvas');
+const ctx = canvas.getContext('2d');
+
+let W, H;
+let bodies = [];
+let running = true;
+let time = 0;
+let G = 8;
+let mode = 'random';
+const SOFTENING = 25;
+const DT = 0.4;
+const TRAIL = 22;
+
+class Body {
+  constructor(x, y, vx, vy, mass, color) {
+    this.x = x; this.y = y;
+    this.vx = vx; this.vy = vy;
+    this.mass = mass;
+    this.color = color || `hsl(${185 + Math.random()*60},70%,${55+Math.random()*20}%)`;
+    this.history = [];
+    this.ax = 0; this.ay = 0;
+  }
+}
+
+function initRandom() {
+  W = canvas.width; H = canvas.height;
+  bodies = [];
+  mode = 'random';
+  for (let i = 0; i < 120; i++) {
+    const x = W * 0.15 + Math.random() * W * 0.7;
+    const y = H * 0.15 + Math.random() * H * 0.7;
+    const angle = Math.random() * Math.PI * 2;
+    const speed = (Math.random() * 0.4);
+    bodies.push(new Body(x, y, Math.cos(angle)*speed, Math.sin(angle)*speed,
+      1 + Math.random() * 2));
+  }
+  document.getElementById('stat-clusters').textContent = 'Cloud';
+}
+
+function initSpiral() {
+  W = canvas.width; H = canvas.height;
+  bodies = [];
+  mode = 'spiral';
+  const cx = W/2, cy = H/2;
+  // Central mass
+  bodies.push(new Body(cx, cy, 0, 0, 800, '#fff0aa'));
+  // Disk particles
+  for (let i = 0; i < 200; i++) {
+    const r = 30 + Math.random() * Math.min(W, H) * 0.38;
+    const theta = Math.random() * Math.PI * 2;
+    const x = cx + r * Math.cos(theta);
+    const y = cy + r * Math.sin(theta);
+    const v = Math.sqrt(G * 800 / r) * 0.85;
+    const vx = -Math.sin(theta) * v + (Math.random()-0.5) * 0.3;
+    const vy =  Math.cos(theta) * v + (Math.random()-0.5) * 0.3;
+    const arm = Math.floor(Math.random() * 3);
+    const hue = [190, 220, 260][arm];
+    bodies.push(new Body(x, y, vx, vy, 0.3 + Math.random()*0.7,
+      `hsl(${hue+Math.random()*20},75%,${60+Math.random()*20}%)`));
+  }
+  document.getElementById('stat-clusters').textContent = 'Spiral';
+}
+
+function initCollision() {
+  W = canvas.width; H = canvas.height;
+  bodies = [];
+  mode = 'collision';
+  function makeGalaxy(cx, cy, vx, vy, color) {
+    bodies.push(new Body(cx, cy, vx, vy, 500, '#ffffee'));
+    for (let i = 0; i < 80; i++) {
+      const r = 15 + Math.random() * 100;
+      const theta = Math.random() * Math.PI * 2;
+      const x = cx + r * Math.cos(theta);
+      const y = cy + r * Math.sin(theta);
+      const v = Math.sqrt(G * 500 / Math.max(r, 5)) * 0.8;
+      const dvx = -Math.sin(theta) * v;
+      const dvy =  Math.cos(theta) * v;
+      bodies.push(new Body(x, y, vx+dvx, vy+dvy, 0.5, color));
+    }
+  }
+  makeGalaxy(W*0.3, H*0.5, 0.6, 0, `hsl(200,80%,65%)`);
+  makeGalaxy(W*0.7, H*0.5, -0.6, 0, `hsl(280,70%,65%)`);
+  document.getElementById('stat-clusters').textContent = 'Collision';
+}
+
+function applyGravity() {
+  for (let i = 0; i < bodies.length; i++) {
+    bodies[i].ax = 0; bodies[i].ay = 0;
+  }
+  for (let i = 0; i < bodies.length; i++) {
+    for (let j = i+1; j < bodies.length; j++) {
+      const dx = bodies[j].x - bodies[i].x;
+      const dy = bodies[j].y - bodies[i].y;
+      const distSq = dx*dx + dy*dy + SOFTENING*SOFTENING;
+      const dist = Math.sqrt(distSq);
+      const force = G * bodies[i].mass * bodies[j].mass / distSq;
+      const fx = force * dx / dist;
+      const fy = force * dy / dist;
+      bodies[i].ax += fx / bodies[i].mass;
+      bodies[i].ay += fy / bodies[i].mass;
+      bodies[j].ax -= fx / bodies[j].mass;
+      bodies[j].ay -= fy / bodies[j].mass;
+    }
+  }
+}
+
+let mergeCount = 0;
+
+function checkMergers() {
+  for (let i = 0; i < bodies.length; i++) {
+    for (let j = i + 1; j < bodies.length; j++) {
+      const dx = bodies[j].x - bodies[i].x;
+      const dy = bodies[j].y - bodies[i].y;
+      const d = Math.hypot(dx, dy);
+      const threshold = Math.cbrt(bodies[i].mass) * 1.4 + Math.cbrt(bodies[j].mass) * 1.4;
+      if (d < threshold) {
+        const tm = bodies[i].mass + bodies[j].mass;
+        // Conserve momentum
+        bodies[i].vx = (bodies[i].mass * bodies[i].vx + bodies[j].mass * bodies[j].vx) / tm;
+        bodies[i].vy = (bodies[i].mass * bodies[i].vy + bodies[j].mass * bodies[j].vy) / tm;
+        // Center of mass position
+        bodies[i].x  = (bodies[i].mass * bodies[i].x  + bodies[j].mass * bodies[j].x)  / tm;
+        bodies[i].y  = (bodies[i].mass * bodies[i].y  + bodies[j].mass * bodies[j].y)  / tm;
+        bodies[i].mass = tm;
+        // Inherited color favors heavier body
+        if (tm > 50) bodies[i].color = `hsl(50,90%,80%)`;
+        bodies.splice(j, 1);
+        j--;
+        mergeCount++;
+      }
+    }
+  }
+}
+
+function stepSim() {
+  applyGravity();
+  let ke = 0;
+  for (const b of bodies) {
+    b.vx += b.ax * DT;
+    b.vy += b.ay * DT;
+    const sp = Math.hypot(b.vx, b.vy);
+    if (sp > 15) { b.vx = b.vx/sp*15; b.vy = b.vy/sp*15; }
+    b.x += b.vx * DT;
+    b.y += b.vy * DT;
+    ke += 0.5 * b.mass * (b.vx*b.vx + b.vy*b.vy);
+
+    if (b.x < -50) b.x += W + 100;
+    if (b.x > W+50) b.x -= W + 100;
+    if (b.y < -50) b.y += H + 100;
+    if (b.y > H+50) b.y -= H + 100;
+
+    b.history.push({x: b.x, y: b.y});
+    if (b.history.length > TRAIL) b.history.shift();
+  }
+
+  if (time % 4 === 0) checkMergers();
+  time++;
+  return ke;
+}
+
+function render() {
+  ctx.fillStyle = 'rgba(3,3,10,0.2)';
+  ctx.fillRect(0, 0, W, H);
+
+  for (const b of bodies) {
+    // Trail
+    if (b.history.length > 1) {
+      ctx.beginPath();
+      ctx.moveTo(b.history[0].x, b.history[0].y);
+      for (let i = 1; i < b.history.length; i++) {
+        ctx.lineTo(b.history[i].x, b.history[i].y);
+      }
+      ctx.strokeStyle = b.color.replace('hsl', 'hsla').replace(')', ',0.15)');
+      ctx.lineWidth = 0.7;
+      ctx.stroke();
+    }
+
+    // Glow for massive bodies
+    if (b.mass > 10) {
+      const grad = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.mass * 0.4);
+      grad.addColorStop(0, b.color.replace('hsl','hsla').replace(')',',0.4)'));
+      grad.addColorStop(1, 'transparent');
+      ctx.beginPath();
+      ctx.arc(b.x, b.y, b.mass * 0.4, 0, Math.PI*2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+    }
+
+    // Body
+    const r = Math.min(4, 1.2 + Math.cbrt(b.mass) * 0.5);
+    ctx.beginPath();
+    ctx.arc(b.x, b.y, r, 0, Math.PI*2);
+    ctx.fillStyle = b.color;
+    ctx.fill();
+  }
+}
+
+function loop() {
+  if (!running) { requestAnimationFrame(loop); return; }
+  const ke = stepSim();
+  render();
+  document.getElementById('stat-bodies').textContent = bodies.length;
+  document.getElementById('stat-ke').textContent = Math.round(ke / 1000) + 'k';
+  document.getElementById('stat-t').textContent = time;
+  document.getElementById('stat-mergers').textContent = mergeCount;
+  requestAnimationFrame(loop);
+}
+
+// Click to add massive body
+canvas.addEventListener('click', e => {
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  bodies.push(new Body(x * (W / rect.width), y * (H / rect.height), 0, 0, 200, '#fff5cc'));
+});
+
+// Controls
+const btnPause = document.getElementById('btn-pause');
+btnPause.addEventListener('click', () => {
+  running = !running;
+  btnPause.textContent = running ? '⏸ Pause' : '▶ Play';
+  btnPause.classList.toggle('on', !running);
+});
+
+document.getElementById('btn-reset').addEventListener('click', () => {
+  time = 0;
+  if (mode === 'spiral') initSpiral();
+  else if (mode === 'collision') initCollision();
+  else initRandom();
+});
+
+document.getElementById('btn-spiral').addEventListener('click', () => { time = 0; initSpiral(); });
+document.getElementById('btn-collision').addEventListener('click', () => { time = 0; initCollision(); });
+
+document.getElementById('g-slider').addEventListener('input', function() {
+  G = +this.value;
+});
+
+// ── Hero animation ────────────────────────────────────────────
+const heroCanvas = document.getElementById('cosmos-hero');
+const hctx = heroCanvas.getContext('2d');
+
+function initHero() {
+  heroCanvas.width = heroCanvas.offsetWidth;
+  heroCanvas.height = heroCanvas.offsetHeight;
+}
+
+let stars = [];
+function initStars() {
+  const n = 300;
+  stars = [];
+  for (let i = 0; i < n; i++) {
+    stars.push({
+      x: Math.random() * heroCanvas.width,
+      y: Math.random() * heroCanvas.height,
+      r: Math.random() * 1.5,
+      brightness: Math.random(),
+      twinkle: Math.random() * Math.PI * 2,
+      speed: 0.02 + Math.random() * 0.04
+    });
+  }
+}
+
+// Simple particle gravity for hero
+let hBodies = [];
+function initHeroBodies() {
+  const w = heroCanvas.width, h = heroCanvas.height;
+  hBodies = [];
+  hBodies.push({x: w/2, y: h/2, vx:0, vy:0, mass:3000});
+  for (let i = 0; i < 80; i++) {
+    const r = 60 + Math.random() * Math.min(w,h) * 0.35;
+    const theta = Math.random() * Math.PI * 2;
+    const x = w/2 + r * Math.cos(theta);
+    const y = h/2 + r * Math.sin(theta);
+    const v = Math.sqrt(12 * 3000 / r) * 0.9;
+    hBodies.push({
+      x, y,
+      vx: -Math.sin(theta)*v, vy: Math.cos(theta)*v,
+      mass: 1,
+      hue: 185 + Math.random() * 75
+    });
+  }
+}
+
+function heroTick() {
+  const w = heroCanvas.width, h = heroCanvas.height;
+  hctx.fillStyle = 'rgba(3,3,10,0.25)';
+  hctx.fillRect(0, 0, w, h);
+
+  // Stars
+  for (const s of stars) {
+    s.twinkle += s.speed;
+    const alpha = 0.2 + 0.5 * Math.sin(s.twinkle) * s.brightness;
+    hctx.beginPath();
+    hctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+    hctx.fillStyle = `rgba(200,220,255,${alpha})`;
+    hctx.fill();
+  }
+
+  // Orbit particles
+  if (hBodies.length > 0) {
+    const center = hBodies[0];
+    for (let i = 1; i < hBodies.length; i++) {
+      const b = hBodies[i];
+      const dx = center.x - b.x, dy = center.y - b.y;
+      const d2 = dx*dx + dy*dy + 400;
+      const d = Math.sqrt(d2);
+      const f = 12 * center.mass / d2;
+      b.vx += f * dx/d * 0.3;
+      b.vy += f * dy/d * 0.3;
+      const sp = Math.hypot(b.vx, b.vy);
+      if (sp > 3) { b.vx=b.vx/sp*3; b.vy=b.vy/sp*3; }
+      b.x += b.vx * 0.3;
+      b.y += b.vy * 0.3;
+      if (b.x < 0 || b.x > w) b.vx *= -1;
+      if (b.y < 0 || b.y > h) b.vy *= -1;
+      hctx.beginPath();
+      hctx.arc(b.x, b.y, 1.5, 0, Math.PI*2);
+      hctx.fillStyle = `hsla(${b.hue},75%,65%,0.4)`;
+      hctx.fill();
+    }
+    // Central glow
+    const grad = hctx.createRadialGradient(center.x, center.y, 0, center.x, center.y, 60);
+    grad.addColorStop(0, 'rgba(200,190,120,0.3)');
+    grad.addColorStop(1, 'transparent');
+    hctx.beginPath();
+    hctx.arc(center.x, center.y, 60, 0, Math.PI*2);
+    hctx.fillStyle = grad;
+    hctx.fill();
+    hctx.beginPath();
+    hctx.arc(center.x, center.y, 4, 0, Math.PI*2);
+    hctx.fillStyle = 'rgba(255,240,180,0.9)';
+    hctx.fill();
+  }
+
+  requestAnimationFrame(heroTick);
+}
+
+// ── Init ──────────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  canvas.width = canvas.parentElement.clientWidth || 900;
+  W = canvas.width; H = canvas.height;
+  initRandom();
+  loop();
+
+  initHero();
+  initStars();
+  initHeroBodies();
+  heroTick();
+});
+
+window.addEventListener('resize', () => {
+  canvas.width = canvas.parentElement.clientWidth || 900;
+  W = canvas.width; H = canvas.height;
+  initHero();
+  initStars();
+  initHeroBodies();
+  if (mode === 'spiral') initSpiral();
+  else if (mode === 'collision') initCollision();
+  else initRandom();
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patterns — EMERGENCE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    body.page-patterns { --accent: #e879f9; --border-accent: rgba(232,121,249,0.25); }
+    #rd-display { display: block; width: 100%; cursor: crosshair; }
+    #ising-display { display: block; width: 100%; }
+    .param-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .param-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.1rem;
+      cursor: pointer;
+      transition: border-color 0.15s;
+      text-align: left;
+    }
+    .param-card:hover, .param-card.active { border-color: var(--accent); }
+    .param-card.active { background: rgba(232,121,249,0.06); }
+    .param-name {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .param-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+    .temp-track {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin: 1rem 0;
+    }
+    .temp-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      min-width: 80px;
+      text-align: center;
+    }
+    .temp-label.hi { color: #f87171; }
+    .temp-label.crit { color: var(--accent); }
+    .temp-label.lo { color: #60a5fa; }
+    input#temp-slider { width: 200px; }
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 5rem 0;
+    }
+    .mag-bar-wrap {
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-top: 0.5rem;
+    }
+    .mag-bar {
+      height: 100%;
+      background: linear-gradient(to right, #60a5fa, var(--accent));
+      border-radius: 3px;
+      transition: width 0.1s;
+      width: 50%;
+    }
+  </style>
+</head>
+<body class="page-patterns">
+
+<nav>
+  <a class="nav-logo" href="index.html">EM<span>ERG</span>ENCE</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Overview</a></li>
+    <li><a href="life.html">Life</a></li>
+    <li><a href="form.html">Form</a></li>
+    <li><a href="patterns.html" class="active">Patterns</a></li>
+    <li><a href="mind.html">Mind</a></li>
+    <li><a href="cosmos.html">Cosmos</a></li>
+  </ul>
+</nav>
+
+<main>
+  <section class="hero">
+    <canvas class="hero-canvas" id="patterns-hero"></canvas>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Chapter 03 · Pattern Formation</p>
+      <h1 class="hero-title"><em>Patterns</em></h1>
+      <p class="hero-sub">
+        In 1952, Alan Turing — the father of computation — turned to a different question:
+        how does a uniform ball of cells become a zebra?
+        The answer, he found, was chemistry. Competing chemicals, diffusing and reacting,
+        spontaneously break symmetry and paint the world.
+      </p>
+    </div>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <section class="content">
+
+    <!-- ── Turing / Reaction-Diffusion ──────────────────── -->
+    <div class="section">
+      <p class="section-tag">Reaction-Diffusion</p>
+      <h2 class="section-title">How a leopard gets its spots</h2>
+      <div class="prose">
+        <p>
+          Alan Turing's 1952 paper <em>"The Chemical Basis of Morphogenesis"</em> is one of
+          the strangest documents in science. Its author was the world's foremost expert on
+          computation, and he was asking: how does an embryo — a sphere of genetically identical
+          cells — produce structured form? Spots and stripes, left and right, head and tail?
+        </p>
+        <p>
+          His answer involved two hypothetical chemicals: an <em>activator</em> that promotes
+          its own production and stimulates pigmentation, and an <em>inhibitor</em> that suppresses
+          the activator. The key: <strong>the inhibitor diffuses faster than the activator.</strong>
+          This simple asymmetry creates a feedback instability. Where activator is high, it
+          produces more of itself — but also sends inhibitor racing outward. The result:
+          local high-activator peaks surrounded by inhibitor moats, separated by roughly equal
+          distances. Spots. Stripes. Labyrinths. The geometry depends on the ratio of
+          diffusion rates and reaction speeds.
+        </p>
+        <p>
+          The beautiful thing is that this mechanism is substrate-independent. It works in
+          chemicals, in neural activation, even in predator-prey dynamics. Wherever you have
+          <strong>local activation and long-range inhibition</strong>, Turing patterns emerge.
+        </p>
+      </div>
+
+      <div class="pullquote">
+        <p>"We may hope to 'explain' some of the striking differences between species
+        in terms of the physical and chemical properties of their skins."</p>
+        <cite>— Alan Turing, The Chemical Basis of Morphogenesis (1952)</cite>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-tag">Gray-Scott System · Interactive</p>
+      <h2 class="section-title">The chemistry of form</h2>
+      <p class="prose" style="margin-bottom:1.5rem">
+        The <strong>Gray-Scott model</strong> is a two-chemical reaction-diffusion system
+        (U feeds V; V self-replicates; both decay). The four parameter presets below
+        produce qualitatively different pattern regimes — from coral growth to cell division to fingerprints.
+        <em>Click or drag</em> on the simulation to inject activator chemical.
+      </p>
+
+      <div class="param-grid">
+        <div class="param-card active" data-F="0.0545" data-k="0.0620" data-name="coral">
+          <p class="param-name">Coral Growth</p>
+          <p class="param-desc">Branching, labyrinthine channels. Resembles reef structures and neural dendrites.</p>
+        </div>
+        <div class="param-card" data-F="0.0280" data-k="0.0530" data-name="mitosis">
+          <p class="param-name">Mitosis</p>
+          <p class="param-desc">Spots that grow and split, mimicking cell division under a microscope.</p>
+        </div>
+        <div class="param-card" data-F="0.0350" data-k="0.0600" data-name="zebrafish">
+          <p class="param-name">Zebrafish Stripes</p>
+          <p class="param-desc">Alternating bands with irregular edges, matching pigmentation seen in fish and big cats.</p>
+        </div>
+        <div class="param-card" data-F="0.0780" data-k="0.0610" data-name="worms">
+          <p class="param-name">Worms</p>
+          <p class="param-desc">Long, meandering filaments that slowly rearrange, like slow-motion wriggling.</p>
+        </div>
+      </div>
+
+      <div class="canvas-wrap">
+        <canvas id="rd-display" height="440"></canvas>
+        <div class="controls">
+          <button class="btn on" id="rd-play">⏸ Pause</button>
+          <button class="btn" id="rd-reset">New Seed</button>
+          <div class="spacer"></div>
+          <div class="slider-group">
+            <span>Speed</span>
+            <input type="range" id="rd-speed" min="1" max="12" value="5">
+            <span id="rd-speed-val">5</span>
+          </div>
+          <div class="slider-group">
+            <span>Brush</span>
+            <input type="range" id="rd-brush" min="2" max="20" value="8">
+          </div>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat"><span class="stat-val" id="rd-gen">0</span><span class="stat-lbl">Iteration</span></div>
+        <div class="stat"><span class="stat-val" id="rd-f">0.0545</span><span class="stat-lbl">Feed Rate (F)</span></div>
+        <div class="stat"><span class="stat-val" id="rd-k">0.0620</span><span class="stat-lbl">Kill Rate (k)</span></div>
+        <div class="stat"><span class="stat-val" id="rd-regime">Coral</span><span class="stat-lbl">Regime</span></div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- ── Ising Model ─────────────────────────────────── -->
+    <div class="section">
+      <p class="section-tag">Phase Transitions</p>
+      <h2 class="section-title">The magnet that explains everything</h2>
+      <div class="prose">
+        <p>
+          In 1925, Ernst Ising solved a simplified model of a ferromagnet: a line of atoms,
+          each with a magnetic "spin" pointing up or down, each trying to align with its neighbors.
+          He found no phase transition in one dimension and concluded the model was uninteresting.
+          He was wrong about the physics, but right about the math — and the model he dismissed
+          became one of the most studied objects in theoretical physics.
+        </p>
+        <p>
+          Lars Onsager's 1944 exact solution for the two-dimensional Ising model revealed
+          something remarkable: at a critical temperature <em>T<sub>c</sub> ≈ 2.27</em>,
+          the system undergoes a <strong>continuous phase transition</strong>.
+          Below T<sub>c</sub>, spins spontaneously align into large domains — the magnet
+          chooses up or down, breaking the symmetry of the equations that govern it.
+          Above T<sub>c</sub>, thermal noise destroys order. At exactly T<sub>c</sub>,
+          magnetic domains exist at <em>every scale simultaneously</em> — a fractal,
+          scale-invariant state where no length scale is privileged.
+        </p>
+        <p>
+          This critical behavior is universal: the same mathematics governs phase transitions
+          in fluids, superconductors, ferroelectrics, neural networks, and stock markets.
+          The <strong>renormalization group</strong> explains why: at the critical point,
+          the system looks the same at every scale, and only the general symmetry of
+          the equations matters, not their specific form.
+        </p>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-tag">Ising Model · Interactive</p>
+      <h2 class="section-title">Watch symmetry break</h2>
+      <p class="prose" style="margin-bottom: 1.5rem">
+        Each pixel is a magnetic spin — <span style="color:var(--accent)">pink</span> for up, dark for down.
+        Drag the temperature slider through the <em>critical point</em> at <strong>T ≈ 2.27</strong>
+        and watch the system spontaneously choose a majority spin, forming fractal domains
+        that look the same at every zoom level.
+      </p>
+
+      <div class="canvas-wrap">
+        <canvas id="ising-display" height="420"></canvas>
+        <div class="controls">
+          <button class="btn on" id="ising-play">⏸ Pause</button>
+          <button class="btn" id="ising-hot">Melt (High T)</button>
+          <button class="btn" id="ising-cold">Freeze (Low T)</button>
+          <div class="spacer"></div>
+          <div class="slider-group">
+            <span style="color:#60a5fa">Order</span>
+            <input type="range" id="temp-slider" min="10" max="500" value="230" step="5">
+            <span style="color:#f87171">Chaos</span>
+          </div>
+          <span id="temp-display" style="font-family:var(--font-mono);font-size:0.78rem;color:var(--accent)">T = 2.30</span>
+        </div>
+      </div>
+
+      <div style="padding: 0 0.25rem;">
+        <div class="temp-track">
+          <span class="temp-label lo">Ordered<br>T &lt; 2.27</span>
+          <div style="flex:1; height:3px; background: linear-gradient(to right, #60a5fa, var(--accent), #f87171); border-radius:2px; position:relative;">
+            <div id="tc-marker" style="position:absolute; left:35%; top:-4px; width:2px; height:11px; background:var(--accent); border-radius:1px;"></div>
+            <span style="position:absolute; left:35%; top:8px; transform:translateX(-50%); font-family:var(--font-mono); font-size:0.65rem; color:var(--accent); white-space:nowrap;">T<sub>c</sub> = 2.27</span>
+          </div>
+          <span class="temp-label hi">Disordered<br>T &gt; 2.27</span>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat">
+          <span class="stat-val" id="ising-mag">0%</span>
+          <span class="stat-lbl">Magnetization</span>
+          <div class="mag-bar-wrap"><div class="mag-bar" id="mag-bar"></div></div>
+        </div>
+        <div class="stat"><span class="stat-val" id="ising-t">2.30</span><span class="stat-lbl">Temperature</span></div>
+        <div class="stat"><span class="stat-val" id="ising-phase">Critical</span><span class="stat-lbl">Phase</span></div>
+        <div class="stat"><span class="stat-val" id="ising-steps">0</span><span class="stat-lbl">Sweeps</span></div>
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<footer>
+  <p class="footer-logo">EMERGENCE</p>
+  <p>← <a href="form.html">Form</a> &nbsp;·&nbsp; <a href="mind.html">Mind →</a></p>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// REACTION-DIFFUSION (Gray-Scott)
+// ═══════════════════════════════════════════════════════════
+
+const rdDisplay = document.getElementById('rd-display');
+const rdCtx = rdDisplay.getContext('2d');
+
+// Offscreen simulation buffer
+const rdOff = document.createElement('canvas');
+const rdOCtx = rdOff.getContext('2d');
+
+let RDW, RDH, rdU, rdV, rdUN, rdVN;
+const RD_CS = 4;  // cell size in pixels
+let rdF = 0.0545, rdK = 0.0620;
+let rdRunning = true, rdIter = 0, rdSteps = 5;
+let brushSize = 8;
+let rdPainting = false;
+
+// Precomputed color palette: dark → deep purple → fuchsia → white-pink
+const rdPal = new Uint8ClampedArray(256 * 4);
+(function buildPalette() {
+  for (let i = 0; i < 256; i++) {
+    const t = i / 255;
+    let r, g, b;
+    if (t < 0.12) {
+      const u = t / 0.12;
+      r = Math.round(7 + u * 15);  g = Math.round(7 + u * 3);   b = Math.round(13 + u * 35);
+    } else if (t < 0.38) {
+      const u = (t - 0.12) / 0.26;
+      r = Math.round(22 + u * 130); g = Math.round(10 + u * 12); b = Math.round(48 + u * 115);
+    } else if (t < 0.68) {
+      const u = (t - 0.38) / 0.30;
+      r = Math.round(152 + u * 88); g = Math.round(22 + u * 60); b = Math.round(163 + u * 78);
+    } else {
+      const u = (t - 0.68) / 0.32;
+      r = Math.round(240 + u * 15); g = Math.round(82 + u * 162); b = Math.round(241 + u * 14);
+    }
+    rdPal[i*4] = Math.min(255, r);
+    rdPal[i*4+1] = Math.min(255, g);
+    rdPal[i*4+2] = Math.min(255, b);
+    rdPal[i*4+3] = 255;
+  }
+})();
+
+function rdInit() {
+  const w = rdDisplay.parentElement.clientWidth || 900;
+  rdDisplay.width = Math.floor(w / RD_CS) * RD_CS;
+  RDW = Math.floor(rdDisplay.width / RD_CS);
+  RDH = Math.floor(rdDisplay.height / RD_CS);
+  rdOff.width = RDW; rdOff.height = RDH;
+
+  const N = RDW * RDH;
+  rdU = new Float32Array(N); rdV = new Float32Array(N);
+  rdUN = new Float32Array(N); rdVN = new Float32Array(N);
+  rdSeed();
+}
+
+function rdSeed() {
+  rdU.fill(1); rdV.fill(0);
+  rdIter = 0;
+  // Scatter random seeds
+  const ns = 10 + Math.floor(Math.random() * 10);
+  for (let s = 0; s < ns; s++) {
+    const sx = Math.floor(Math.random() * RDW);
+    const sy = Math.floor(Math.random() * RDH);
+    const r = 3 + Math.floor(Math.random() * 5);
+    for (let dy = -r; dy <= r; dy++)
+      for (let dx = -r; dx <= r; dx++) {
+        if (dx*dx + dy*dy > r*r) continue;
+        const x = (sx+dx+RDW)%RDW, y = (sy+dy+RDH)%RDH;
+        const i = y*RDW+x;
+        rdU[i] = 0.5 + (Math.random()-0.5)*0.1;
+        rdV[i] = 0.25 + (Math.random()-0.5)*0.05;
+      }
+  }
+  // Warmup
+  for (let w = 0; w < 150; w++) rdStep();
+}
+
+function rdStep() {
+  const Du = 0.2097, Dv = 0.1050;
+  const F = rdF, k = rdK;
+  const W = RDW, H = RDH;
+
+  for (let y = 0; y < H; y++) {
+    const ym = (y-1+H)%H, yp = (y+1)%H;
+    for (let x = 0; x < W; x++) {
+      const i = y*W+x;
+      const xm = (x-1+W)%W, xp = (x+1)%W;
+
+      // 9-point isotropic Laplacian
+      const lu = 0.05*(rdU[ym*W+xm]+rdU[ym*W+xp]+rdU[yp*W+xm]+rdU[yp*W+xp]) +
+                 0.20*(rdU[ym*W+x]+rdU[y*W+xm]+rdU[y*W+xp]+rdU[yp*W+x]) - rdU[i];
+      const lv = 0.05*(rdV[ym*W+xm]+rdV[ym*W+xp]+rdV[yp*W+xm]+rdV[yp*W+xp]) +
+                 0.20*(rdV[ym*W+x]+rdV[y*W+xm]+rdV[y*W+xp]+rdV[yp*W+x]) - rdV[i];
+
+      const uvv = rdU[i]*rdV[i]*rdV[i];
+      rdUN[i] = Math.max(0, Math.min(1, rdU[i] + Du*lu - uvv + F*(1-rdU[i])));
+      rdVN[i] = Math.max(0, Math.min(1, rdV[i] + Dv*lv + uvv - (F+k)*rdV[i]));
+    }
+  }
+  let tmp = rdU; rdU = rdUN; rdUN = tmp;
+  tmp = rdV; rdV = rdVN; rdVN = tmp;
+  rdIter++;
+}
+
+function rdRender() {
+  const img = rdOCtx.createImageData(RDW, RDH);
+  for (let i = 0; i < RDW*RDH; i++) {
+    const val = Math.min(255, Math.round(rdV[i] * 2.8 * 255));
+    img.data[i*4]   = rdPal[val*4];
+    img.data[i*4+1] = rdPal[val*4+1];
+    img.data[i*4+2] = rdPal[val*4+2];
+    img.data[i*4+3] = 255;
+  }
+  rdOCtx.putImageData(img, 0, 0);
+  rdCtx.imageSmoothingEnabled = false;
+  rdCtx.drawImage(rdOff, 0, 0, rdDisplay.width, rdDisplay.height);
+}
+
+function rdPaint(ex, ey) {
+  const scaleX = RDW / rdDisplay.offsetWidth;
+  const scaleY = RDH / (rdDisplay.offsetHeight || rdDisplay.height);
+  const cx = Math.floor(ex * scaleX);
+  const cy = Math.floor(ey * scaleY);
+  const r = brushSize;
+  for (let dy = -r; dy <= r; dy++)
+    for (let dx = -r; dx <= r; dx++) {
+      if (dx*dx+dy*dy > r*r) continue;
+      const x = (cx+dx+RDW)%RDW, y = (cy+dy+RDH)%RDH;
+      const i = y*RDW+x;
+      rdU[i] = 0.5; rdV[i] = 0.25;
+    }
+}
+
+function rdLoop() {
+  if (rdRunning) {
+    for (let s = 0; s < rdSteps; s++) rdStep();
+    rdRender();
+  }
+  document.getElementById('rd-gen').textContent = rdIter.toLocaleString();
+  requestAnimationFrame(rdLoop);
+}
+
+// RD controls
+document.getElementById('rd-play').addEventListener('click', function() {
+  rdRunning = !rdRunning;
+  this.textContent = rdRunning ? '⏸ Pause' : '▶ Play';
+  this.classList.toggle('on', rdRunning);
+});
+
+document.getElementById('rd-reset').addEventListener('click', rdSeed);
+
+document.getElementById('rd-speed').addEventListener('input', function() {
+  rdSteps = +this.value;
+  document.getElementById('rd-speed-val').textContent = this.value;
+});
+
+document.getElementById('rd-brush').addEventListener('input', function() {
+  brushSize = +this.value;
+});
+
+document.querySelectorAll('.param-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.param-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    rdF = parseFloat(card.dataset.f);
+    rdK = parseFloat(card.dataset.k);
+    document.getElementById('rd-f').textContent = rdF.toFixed(4);
+    document.getElementById('rd-k').textContent = rdK.toFixed(4);
+    document.getElementById('rd-regime').textContent = card.querySelector('.param-name').textContent;
+    rdSeed();
+  });
+});
+
+rdDisplay.addEventListener('mousedown', e => { rdPainting = true; rdPaint(e.offsetX, e.offsetY); });
+rdDisplay.addEventListener('mousemove', e => { if (rdPainting) rdPaint(e.offsetX, e.offsetY); });
+window.addEventListener('mouseup', () => { rdPainting = false; });
+
+rdDisplay.addEventListener('touchstart', e => {
+  rdPainting = true;
+  const r = rdDisplay.getBoundingClientRect();
+  rdPaint(e.touches[0].clientX - r.left, e.touches[0].clientY - r.top);
+  e.preventDefault();
+}, {passive:false});
+rdDisplay.addEventListener('touchmove', e => {
+  const r = rdDisplay.getBoundingClientRect();
+  rdPaint(e.touches[0].clientX - r.left, e.touches[0].clientY - r.top);
+  e.preventDefault();
+}, {passive:false});
+window.addEventListener('touchend', () => { rdPainting = false; });
+
+
+// ═══════════════════════════════════════════════════════════
+// ISING MODEL
+// ═══════════════════════════════════════════════════════════
+
+const isingDisplay = document.getElementById('ising-display');
+const isingCtx = isingDisplay.getContext('2d');
+const isingOff = document.createElement('canvas');
+const isingOCtx = isingOff.getContext('2d');
+
+const IW = 220, IH = 180;
+let spins = new Int8Array(IW * IH);
+let isingRunning = true;
+let isingT = 2.30;
+let isingSteps = 0;
+
+// Precompute exp table for Metropolis
+let expTable = {};
+function rebuildExpTable() {
+  expTable = {};
+  for (const dE of [-8, -4, 0, 4, 8]) {
+    expTable[dE] = dE <= 0 ? 1 : Math.exp(-dE / isingT);
+  }
+}
+
+function isingInit() {
+  const w = isingDisplay.parentElement.clientWidth || 900;
+  isingDisplay.width = w;
+  isingOff.width = IW; isingOff.height = IH;
+  isingRandomize();
+  rebuildExpTable();
+}
+
+function isingRandomize() {
+  for (let i = 0; i < spins.length; i++)
+    spins[i] = Math.random() < 0.5 ? 1 : -1;
+}
+
+function isingSweep() {
+  // N random flip attempts = one "sweep"
+  const N = IW * IH;
+  for (let n = 0; n < N; n++) {
+    const i = Math.floor(Math.random() * N);
+    const x = i % IW, y = Math.floor(i / IW);
+    const s = spins[i];
+    const nb = spins[y*IW + (x-1+IW)%IW] +
+               spins[y*IW + (x+1)%IW] +
+               spins[(y-1+IH)%IH * IW + x] +
+               spins[(y+1)%IH * IW + x];
+    const dE = 2 * s * nb;
+    const p = expTable[dE];
+    if (p === undefined ? (Math.random() < Math.exp(-dE / isingT)) : (Math.random() < p)) {
+      spins[i] = -s;
+    }
+  }
+  isingSteps++;
+}
+
+function isingRender() {
+  const img = isingOCtx.createImageData(IW, IH);
+  let sumSpin = 0;
+  for (let i = 0; i < IW*IH; i++) {
+    const up = spins[i] === 1;
+    sumSpin += spins[i];
+    img.data[i*4]   = up ? 232 : 7;
+    img.data[i*4+1] = up ? 121 : 7;
+    img.data[i*4+2] = up ? 249 : 13;
+    img.data[i*4+3] = 255;
+  }
+  isingOCtx.putImageData(img, 0, 0);
+  isingCtx.imageSmoothingEnabled = false;
+  isingCtx.drawImage(isingOff, 0, 0, isingDisplay.width, isingDisplay.height);
+
+  const mag = Math.abs(sumSpin) / (IW * IH);
+  document.getElementById('ising-mag').textContent = Math.round(mag * 100) + '%';
+  document.getElementById('mag-bar').style.width = (mag * 100) + '%';
+  document.getElementById('ising-t').textContent = isingT.toFixed(2);
+  document.getElementById('ising-steps').textContent = isingSteps;
+
+  const TC = 2.269;
+  const phase = isingT < TC - 0.15 ? 'Ordered' : isingT > TC + 0.15 ? 'Disordered' : 'Critical';
+  const phaseEl = document.getElementById('ising-phase');
+  phaseEl.textContent = phase;
+  phaseEl.style.color = phase === 'Ordered' ? '#60a5fa' : phase === 'Critical' ? 'var(--accent)' : '#f87171';
+}
+
+function isingLoop() {
+  if (isingRunning) {
+    const sweepsPerFrame = isingT < 1.5 ? 1 : isingT > 3.5 ? 4 : 2;
+    for (let s = 0; s < sweepsPerFrame; s++) isingSweep();
+    isingRender();
+  }
+  requestAnimationFrame(isingLoop);
+}
+
+document.getElementById('ising-play').addEventListener('click', function() {
+  isingRunning = !isingRunning;
+  this.textContent = isingRunning ? '⏸ Pause' : '▶ Play';
+  this.classList.toggle('on', isingRunning);
+});
+
+document.getElementById('ising-hot').addEventListener('click', () => {
+  document.getElementById('temp-slider').value = 450;
+  isingT = 4.5; rebuildExpTable();
+  document.getElementById('temp-display').textContent = 'T = ' + isingT.toFixed(2);
+  isingRandomize();
+});
+
+document.getElementById('ising-cold').addEventListener('click', () => {
+  document.getElementById('temp-slider').value = 50;
+  isingT = 0.5; rebuildExpTable();
+  document.getElementById('temp-display').textContent = 'T = ' + isingT.toFixed(2);
+  spins.fill(Math.random() < 0.5 ? 1 : -1); // uniform start
+});
+
+document.getElementById('temp-slider').addEventListener('input', function() {
+  isingT = +this.value / 100;
+  rebuildExpTable();
+  document.getElementById('temp-display').textContent = 'T = ' + isingT.toFixed(2);
+});
+
+// ═══════════════════════════════════════════════════════════
+// HERO ANIMATION (lightweight RD)
+// ═══════════════════════════════════════════════════════════
+
+const heroCanvas = document.getElementById('patterns-hero');
+const hCtx = heroCanvas.getContext('2d');
+const hOff = document.createElement('canvas');
+const hOCtx = hOff.getContext('2d');
+const HW = 180, HH = 90;
+let hu, hv, hun, hvn;
+hOff.width = HW; hOff.height = HH;
+
+function initHero() {
+  heroCanvas.width = heroCanvas.offsetWidth;
+  heroCanvas.height = heroCanvas.offsetHeight;
+  hu = new Float32Array(HW*HH); hv = new Float32Array(HW*HH);
+  hun = new Float32Array(HW*HH); hvn = new Float32Array(HW*HH);
+  hu.fill(1);
+  for (let s = 0; s < 20; s++) {
+    const sx = Math.floor(Math.random()*HW), sy = Math.floor(Math.random()*HH);
+    for (let dy=-4; dy<=4; dy++) for (let dx=-4; dx<=4; dx++) {
+      if (dx*dx+dy*dy>16) continue;
+      const x=(sx+dx+HW)%HW, y=(sy+dy+HH)%HH, i=y*HW+x;
+      hu[i]=0.5; hv[i]=0.25;
+    }
+  }
+  for (let w=0; w<200; w++) heroStep();
+}
+
+function heroStep() {
+  const F=0.0545, k=0.0620, Du=0.2097, Dv=0.1050;
+  for (let y=0; y<HH; y++) {
+    const ym=(y-1+HH)%HH, yp=(y+1)%HH;
+    for (let x=0; x<HW; x++) {
+      const i=y*HW+x, xm=(x-1+HW)%HW, xp=(x+1)%HW;
+      const lu=0.05*(hu[ym*HW+xm]+hu[ym*HW+xp]+hu[yp*HW+xm]+hu[yp*HW+xp])+0.20*(hu[ym*HW+x]+hu[y*HW+xm]+hu[y*HW+xp]+hu[yp*HW+x])-hu[i];
+      const lv=0.05*(hv[ym*HW+xm]+hv[ym*HW+xp]+hv[yp*HW+xm]+hv[yp*HW+xp])+0.20*(hv[ym*HW+x]+hv[y*HW+xm]+hv[y*HW+xp]+hv[yp*HW+x])-hv[i];
+      const uvv=hu[i]*hv[i]*hv[i];
+      hun[i]=Math.max(0,Math.min(1,hu[i]+Du*lu-uvv+F*(1-hu[i])));
+      hvn[i]=Math.max(0,Math.min(1,hv[i]+Dv*lv+uvv-(F+k)*hv[i]));
+    }
+  }
+  let t=hu; hu=hun; hun=t; t=hv; hv=hvn; hvn=t;
+}
+
+function heroRender() {
+  for (let s=0; s<3; s++) heroStep();
+  const img = hOCtx.createImageData(HW, HH);
+  for (let i=0; i<HW*HH; i++) {
+    const val = Math.min(255, Math.round(hv[i]*2.8*255));
+    img.data[i*4]   = rdPal[val*4];
+    img.data[i*4+1] = rdPal[val*4+1];
+    img.data[i*4+2] = rdPal[val*4+2];
+    img.data[i*4+3] = Math.round(rdPal[val*4+3] * 0.55);
+  }
+  hOCtx.putImageData(img, 0, 0);
+  hCtx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
+  hCtx.imageSmoothingEnabled = false;
+  hCtx.drawImage(hOff, 0, 0, heroCanvas.width, heroCanvas.height);
+  requestAnimationFrame(heroRender);
+}
+
+// ═══════════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════════
+
+window.addEventListener('load', () => {
+  rdInit();
+  rdLoop();
+  isingInit();
+  isingLoop();
+  initHero();
+  heroRender();
+});
+
+window.addEventListener('resize', () => {
+  rdInit();
+  isingInit();
+  heroCanvas.width = heroCanvas.offsetWidth;
+  heroCanvas.height = heroCanvas.offsetHeight;
+});
+</script>
+</body>
+</html>

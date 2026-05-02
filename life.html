@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Life — EMERGENCE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    #gol-hero { background: #07070d; }
+    .kbd-hint {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      padding: 0.55rem 1.25rem;
+      border-top: 1px solid var(--border);
+      background: rgba(13,13,26,0.95);
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .kbd-hint kbd {
+      display: inline-block;
+      padding: 0.1rem 0.45rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 4px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--accent);
+      margin-right: 0.25rem;
+    }
+  </style>
+</head>
+<body class="page-life">
+
+<nav>
+  <a class="nav-logo" href="index.html">EM<span>ERG</span>ENCE</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Overview</a></li>
+    <li><a href="life.html" class="active">Life</a></li>
+    <li><a href="form.html">Form</a></li>
+    <li><a href="patterns.html">Patterns</a></li>
+    <li><a href="mind.html">Mind</a></li>
+    <li><a href="cosmos.html">Cosmos</a></li>
+  </ul>
+</nav>
+
+<main>
+  <section class="hero">
+    <canvas class="hero-canvas" id="gol-hero"></canvas>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Chapter 01 · Cellular Automata</p>
+      <h1 class="hero-title"><em>Life</em></h1>
+      <p class="hero-sub">
+        Three rules. A grid. Universal computation.
+        John Conway's Game of Life is perhaps the most striking demonstration
+        that profound complexity can arise from almost nothing.
+      </p>
+    </div>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <section class="content">
+
+    <div class="section">
+      <p class="section-tag">Background</p>
+      <h2 class="section-title">The universe in a rule table</h2>
+      <div class="prose">
+        <p>
+          In 1970, mathematician John Conway set out to find the simplest possible rule set
+          that would produce interesting behavior — neither dying quickly nor growing forever,
+          but poised at the edge of order and chaos. He found it. His <em>Game of Life</em>
+          has three rules applied simultaneously to every cell on an infinite grid:
+        </p>
+        <p>
+          <strong>Underpopulation:</strong> A live cell with fewer than two live neighbors dies.<br>
+          <strong>Overpopulation:</strong> A live cell with more than three live neighbors dies.<br>
+          <strong>Reproduction:</strong> A dead cell with exactly three live neighbors becomes alive.
+        </p>
+        <p>
+          From these local rules — each cell knowing only its eight immediate neighbors —
+          global structures emerge that move, oscillate, and interact. Structures called
+          <em>gliders</em> travel across the grid. <em>Guns</em> endlessly produce them.
+          Entire <strong>Turing-complete computers</strong> have been built inside the Game of Life,
+          capable of simulating any computable function, including the Game of Life itself.
+        </p>
+      </div>
+
+      <div class="pullquote">
+        <p>"The Game of Life is the simplest example I know of how an extraordinarily complex behavior
+        can emerge from very simple rules."</p>
+        <cite>— Stephen Wolfram, A New Kind of Science</cite>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-tag">Interactive Simulation</p>
+      <h2 class="section-title">Explore the automaton</h2>
+      <p class="prose" style="margin-bottom:0">
+        Click cells to toggle them. Load a preset pattern, then press <em>Play</em> to watch it evolve.
+        The grid wraps at the edges.
+      </p>
+
+      <div class="canvas-wrap">
+        <canvas id="gol-canvas" height="480"></canvas>
+        <div class="controls">
+          <button class="btn" id="btn-play">▶ Play</button>
+          <button class="btn" id="btn-step">Step</button>
+          <button class="btn btn-danger" id="btn-clear">Clear</button>
+          <button class="btn" id="btn-rand">Randomize</button>
+          <button class="btn" id="btn-heat">Heat Map</button>
+          <div class="spacer"></div>
+          <div class="slider-group">
+            <span>Speed</span>
+            <input type="range" id="speed" min="1" max="30" value="10">
+            <span id="speed-val">10 fps</span>
+          </div>
+        </div>
+        <p class="kbd-hint">
+          <span><kbd>Space</kbd> Play/Pause</span>
+          <span><kbd>.</kbd> Step</span>
+          <span><kbd>r</kbd> Randomize</span>
+          <span><kbd>c</kbd> Clear</span>
+          <span><kbd>h</kbd> Heat Map</span>
+        </p>
+        <div class="pills">
+          <button class="pill" data-pattern="glider">Glider</button>
+          <button class="pill" data-pattern="blinker">Blinker</button>
+          <button class="pill" data-pattern="pulsar">Pulsar</button>
+          <button class="pill" data-pattern="gun">Glider Gun</button>
+          <button class="pill" data-pattern="rpent">R-pentomino</button>
+          <button class="pill" data-pattern="diehard">Diehard</button>
+        </div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat"><span class="stat-val" id="gen">0</span><span class="stat-lbl">Generation</span></div>
+        <div class="stat"><span class="stat-val" id="pop">0</span><span class="stat-lbl">Population</span></div>
+        <div class="stat"><span class="stat-val" id="births">0</span><span class="stat-lbl">Births</span></div>
+        <div class="stat"><span class="stat-val" id="deaths">0</span><span class="stat-lbl">Deaths</span></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <p class="section-tag">Implications</p>
+      <h2 class="section-title">Computation as physics</h2>
+      <div class="prose">
+        <p>
+          What the Game of Life reveals is that <strong>computation is substrate-independent</strong>.
+          The rules don't require silicon, neurons, or any particular physics.
+          Any medium capable of representing and updating two states with local rules
+          could, in principle, host universal computation.
+        </p>
+        <p>
+          This has a startling implication: our own universe — governed by local physical laws
+          applied to a quantum field — may itself be a kind of cellular automaton. Physicist
+          Ed Fredkin proposed exactly this. John Wheeler spoke of <em>"it from bit"</em>:
+          the idea that physical reality is ultimately informational.
+        </p>
+        <p>
+          Whether or not that's true, the Game of Life demonstrates that <strong>purpose without
+          a designer, and structure without a blueprint, are not paradoxes</strong> — they are
+          natural consequences of computation at the edge of chaos. Life itself may be
+          nothing more, and nothing less.
+        </p>
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<footer>
+  <p class="footer-logo">EMERGENCE</p>
+  <p>← <a href="index.html">Overview</a> &nbsp;·&nbsp; <a href="form.html">Form →</a></p>
+</footer>
+
+<script>
+// ── Game of Life engine ──────────────────────────────────────
+const CELL = 9;
+const canvas = document.getElementById('gol-canvas');
+const ctx = canvas.getContext('2d');
+
+let COLS, ROWS, grid, nextGrid;
+let generation = 0, running = false, interval = null, fps = 10;
+let lastBirths = 0, lastDeaths = 0;
+let heat, heatMode = false;
+
+function initGrid() {
+  const w = canvas.parentElement.clientWidth || 900;
+  canvas.width = Math.floor(w / CELL) * CELL;
+  COLS = Math.floor(canvas.width / CELL);
+  ROWS = Math.floor(canvas.height / CELL);
+  grid = new Uint8Array(COLS * ROWS);
+  nextGrid = new Uint8Array(COLS * ROWS);
+  heat = new Float32Array(COLS * ROWS);
+}
+
+function idx(r, c) { return r * COLS + c; }
+
+function countNeighbors(r, c) {
+  let n = 0;
+  for (let dr = -1; dr <= 1; dr++)
+    for (let dc = -1; dc <= 1; dc++) {
+      if (!dr && !dc) continue;
+      n += grid[idx((r+dr+ROWS)%ROWS, (c+dc+COLS)%COLS)];
+    }
+  return n;
+}
+
+function step() {
+  let births = 0, deaths = 0;
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const n = countNeighbors(r, c);
+      const alive = grid[idx(r, c)];
+      let next;
+      if (alive) {
+        next = (n === 2 || n === 3) ? 1 : 0;
+        if (!next) deaths++;
+      } else {
+        next = n === 3 ? 1 : 0;
+        if (next) births++;
+      }
+      nextGrid[idx(r, c)] = next;
+    }
+  }
+  [grid, nextGrid] = [nextGrid, grid];
+  generation++;
+  lastBirths = births;
+  lastDeaths = deaths;
+}
+
+function draw() {
+  ctx.fillStyle = '#07070d';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  let pop = 0;
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const i = idx(r, c);
+      const alive = grid[i];
+
+      if (alive) {
+        pop++;
+        heat[i] = Math.min(60, heat[i] + 1);
+      } else {
+        heat[i] = Math.max(0, heat[i] * 0.87);
+      }
+
+      if (heatMode) {
+        if (alive) {
+          const t = heat[i] / 60;
+          // young cells: bright yellow-green → old cells: deep amber
+          const hue = Math.round(110 - t * 70);
+          const lit  = Math.round(68 - t * 13);
+          ctx.fillStyle = `hsl(${hue},98%,${lit}%)`;
+          ctx.fillRect(c*CELL+1, r*CELL+1, CELL-1, CELL-1);
+        } else if (heat[i] > 0.4) {
+          // cooling glow for recently-dead cells
+          const alpha = (heat[i] / 60) * 0.45;
+          ctx.fillStyle = `rgba(255,65,0,${alpha})`;
+          ctx.fillRect(c*CELL+1, r*CELL+1, CELL-1, CELL-1);
+        }
+      } else {
+        if (alive) {
+          const n = countNeighbors(r, c);
+          ctx.fillStyle = `rgba(74,222,128,${Math.min(0.95, 0.5 + n * 0.07)})`;
+          ctx.fillRect(c*CELL+1, r*CELL+1, CELL-1, CELL-1);
+        }
+      }
+    }
+  }
+
+  document.getElementById('gen').textContent = generation.toLocaleString();
+  document.getElementById('pop').textContent = pop.toLocaleString();
+  document.getElementById('births').textContent = lastBirths.toLocaleString();
+  document.getElementById('deaths').textContent = lastDeaths.toLocaleString();
+}
+
+function tick() {
+  step();
+  draw();
+}
+
+// ── Patterns ────────────────────────────────────────────────
+const PATTERNS = {
+  glider: [[0,1],[1,2],[2,0],[2,1],[2,2]],
+  blinker: [[1,0],[1,1],[1,2]],
+  pulsar: [
+    [0,2],[0,3],[0,4],[0,8],[0,9],[0,10],
+    [2,0],[2,5],[2,7],[2,12],
+    [3,0],[3,5],[3,7],[3,12],
+    [4,0],[4,5],[4,7],[4,12],
+    [5,2],[5,3],[5,4],[5,8],[5,9],[5,10],
+    [7,2],[7,3],[7,4],[7,8],[7,9],[7,10],
+    [8,0],[8,5],[8,7],[8,12],
+    [9,0],[9,5],[9,7],[9,12],
+    [10,0],[10,5],[10,7],[10,12],
+    [12,2],[12,3],[12,4],[12,8],[12,9],[12,10]
+  ],
+  gun: [
+    [0,24],[1,22],[1,24],[2,12],[2,13],[2,20],[2,21],[2,34],[2,35],
+    [3,11],[3,15],[3,20],[3,21],[3,34],[3,35],
+    [4,0],[4,1],[4,10],[4,16],[4,20],[4,21],
+    [5,0],[5,1],[5,10],[5,14],[5,16],[5,17],[5,22],[5,24],
+    [6,10],[6,16],[6,24],
+    [7,11],[7,15],[8,12],[8,13]
+  ],
+  rpent: [[0,1],[0,2],[1,0],[1,1],[2,1]],
+  diehard: [[0,6],[1,0],[1,1],[2,1],[2,5],[2,6],[2,7]]
+};
+
+function placePattern(name) {
+  grid.fill(0);
+  if (heat) heat.fill(0);
+  generation = 0;
+  const cells = PATTERNS[name];
+  if (!cells) return;
+  const maxR = Math.max(...cells.map(([r])=>r));
+  const maxC = Math.max(...cells.map(([,c])=>c));
+  const or = Math.floor((ROWS - maxR) / 2);
+  const oc = Math.floor((COLS - maxC) / 2);
+  for (const [r, c] of cells) {
+    const nr = or + r, nc = oc + c;
+    if (nr >= 0 && nr < ROWS && nc >= 0 && nc < COLS)
+      grid[idx(nr, nc)] = 1;
+  }
+  draw();
+}
+
+function randomize() {
+  for (let i = 0; i < grid.length; i++)
+    grid[i] = Math.random() < 0.3 ? 1 : 0;
+  if (heat) heat.fill(0);
+  generation = 0;
+  draw();
+}
+
+// ── Controls ────────────────────────────────────────────────
+const btnPlay = document.getElementById('btn-play');
+
+function setRunning(r) {
+  running = r;
+  clearInterval(interval);
+  if (running) {
+    interval = setInterval(tick, 1000 / fps);
+    btnPlay.textContent = '⏸ Pause';
+    btnPlay.classList.add('on');
+  } else {
+    btnPlay.textContent = '▶ Play';
+    btnPlay.classList.remove('on');
+  }
+}
+
+btnPlay.addEventListener('click', () => setRunning(!running));
+
+document.getElementById('btn-step').addEventListener('click', () => {
+  setRunning(false);
+  tick();
+});
+
+document.getElementById('btn-clear').addEventListener('click', () => {
+  setRunning(false);
+  grid.fill(0);
+  if (heat) heat.fill(0);
+  generation = 0;
+  draw();
+});
+
+const btnHeat = document.getElementById('btn-heat');
+btnHeat.addEventListener('click', () => {
+  heatMode = !heatMode;
+  btnHeat.classList.toggle('on', heatMode);
+  btnHeat.textContent = heatMode ? 'Normal' : 'Heat Map';
+  if (!heatMode && heat) heat.fill(0);
+  draw();
+});
+
+document.getElementById('btn-rand').addEventListener('click', randomize);
+
+const speedSlider = document.getElementById('speed');
+speedSlider.addEventListener('input', () => {
+  fps = +speedSlider.value;
+  document.getElementById('speed-val').textContent = fps + ' fps';
+  if (running) setRunning(true);
+});
+
+document.querySelectorAll('.pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    setRunning(false);
+    placePattern(btn.dataset.pattern);
+  });
+});
+
+// ── Click to draw ─────────────────────────────────────────
+let drawing = false;
+let drawValue = 1;
+
+canvas.addEventListener('mousedown', e => {
+  drawing = true;
+  const r = Math.floor(e.offsetY / CELL);
+  const c = Math.floor(e.offsetX / CELL);
+  drawValue = grid[idx(r, c)] ? 0 : 1;
+  grid[idx(r, c)] = drawValue;
+  draw();
+});
+
+canvas.addEventListener('mousemove', e => {
+  if (!drawing) return;
+  const r = Math.floor(e.offsetY / CELL);
+  const c = Math.floor(e.offsetX / CELL);
+  if (r >= 0 && r < ROWS && c >= 0 && c < COLS) {
+    grid[idx(r, c)] = drawValue;
+    draw();
+  }
+});
+
+window.addEventListener('mouseup', () => { drawing = false; });
+
+// ── Keyboard shortcuts ────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  switch (e.key) {
+    case ' ':
+      e.preventDefault();
+      setRunning(!running);
+      break;
+    case '.':
+      setRunning(false);
+      tick();
+      break;
+    case 'r':
+      randomize();
+      break;
+    case 'c':
+      setRunning(false);
+      grid.fill(0);
+      if (heat) heat.fill(0);
+      generation = 0;
+      draw();
+      break;
+    case 'h':
+      heatMode = !heatMode;
+      btnHeat.classList.toggle('on', heatMode);
+      btnHeat.textContent = heatMode ? 'Normal' : 'Heat Map';
+      if (!heatMode && heat) heat.fill(0);
+      draw();
+      break;
+  }
+});
+
+// ── Hero background GoL ──────────────────────────────────
+const heroCanvas = document.getElementById('gol-hero');
+const hctx = heroCanvas.getContext('2d');
+let HC, HR, hgrid, hnext;
+
+function initHero() {
+  heroCanvas.width = heroCanvas.offsetWidth;
+  heroCanvas.height = heroCanvas.offsetHeight;
+  const cs = 14;
+  HC = Math.floor(heroCanvas.width / cs);
+  HR = Math.floor(heroCanvas.height / cs);
+  hgrid = new Uint8Array(HC * HR);
+  hnext = new Uint8Array(HC * HR);
+  for (let i = 0; i < hgrid.length; i++)
+    hgrid[i] = Math.random() < 0.35 ? 1 : 0;
+}
+
+function heroTick() {
+  for (let r = 0; r < HR; r++) {
+    for (let c = 0; c < HC; c++) {
+      let n = 0;
+      for (let dr = -1; dr <= 1; dr++)
+        for (let dc = -1; dc <= 1; dc++) {
+          if (!dr && !dc) continue;
+          n += hgrid[((r+dr+HR)%HR)*HC + (c+dc+HC)%HC];
+        }
+      const alive = hgrid[r*HC+c];
+      hnext[r*HC+c] = alive ? (n===2||n===3?1:0) : (n===3?1:0);
+    }
+  }
+  [hgrid, hnext] = [hnext, hgrid];
+
+  const cs = Math.floor(heroCanvas.width / HC);
+  hctx.fillStyle = 'rgba(7,7,13,0.3)';
+  hctx.fillRect(0, 0, heroCanvas.width, heroCanvas.height);
+  for (let r = 0; r < HR; r++)
+    for (let c = 0; c < HC; c++)
+      if (hgrid[r*HC+c]) {
+        hctx.fillStyle = 'rgba(74,222,128,0.12)';
+        hctx.fillRect(c*cs, r*cs, cs-1, cs-1);
+      }
+}
+
+// ── Init ────────────────────────────────────────────────────
+initHero();
+setInterval(heroTick, 120);
+
+window.addEventListener('load', () => {
+  initGrid();
+  placePattern('gun');
+});
+
+window.addEventListener('resize', () => {
+  const wasRunning = running;
+  setRunning(false);
+  initGrid();
+  placePattern('gun');
+  if (wasRunning) setRunning(true);
+});
+</script>
+</body>
+</html>
