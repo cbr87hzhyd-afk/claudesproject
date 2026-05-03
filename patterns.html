@@ -4,6 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Patterns — EMERGENCE</title>
+  <meta name="description" content="Turing's reaction-diffusion and Ising's phase transition — how chemistry breaks symmetry to paint stripes, spots, and fractals.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="canonical" href="https://cbr87hzhyd-afk.github.io/claudesproject/patterns.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="EMERGENCE">
+  <meta property="og:title" content="Patterns — Pattern Formation · EMERGENCE">
+  <meta property="og:description" content="Turing reaction-diffusion and the Ising phase transition. How chemistry paints leopards.">
+  <meta property="og:image" content="https://cbr87hzhyd-afk.github.io/claudesproject/assets/og/patterns.svg">
+  <meta property="og:url" content="https://cbr87hzhyd-afk.github.io/claudesproject/patterns.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Patterns — EMERGENCE">
+  <meta name="twitter:description" content="How chemistry paints stripes, spots, and fractals.">
+  <meta name="twitter:image" content="https://cbr87hzhyd-afk.github.io/claudesproject/assets/og/patterns.svg">
+  <meta name="theme-color" content="#07070d">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -178,6 +192,7 @@
         <div class="controls">
           <button class="btn on" id="rd-play">⏸ Pause</button>
           <button class="btn" id="rd-reset">New Seed</button>
+          <button class="btn" id="rd-share" title="Copy a sharable link to this regime">⤴ Share</button>
           <div class="spacer"></div>
           <div class="slider-group">
             <span>Speed</span>
@@ -444,6 +459,37 @@ document.getElementById('rd-play').addEventListener('click', function() {
 
 document.getElementById('rd-reset').addEventListener('click', rdSeed);
 
+// ── Share regime via URL hash ──────────────────────────────
+function getActiveRegimeName() {
+  const card = document.querySelector('.param-card.active');
+  return card ? card.dataset.name : 'custom';
+}
+function decodeRdHash() {
+  const m = location.hash.match(/^#p=([\d.]+),([\d.]+),(\w+)$/);
+  if (!m) return false;
+  rdF = parseFloat(m[1]); rdK = parseFloat(m[2]);
+  document.getElementById('rd-f').textContent = rdF.toFixed(4);
+  document.getElementById('rd-k').textContent = rdK.toFixed(4);
+  // Highlight matching preset, if any
+  let matched = null;
+  document.querySelectorAll('.param-card').forEach(c => {
+    if (Math.abs(parseFloat(c.dataset.f) - rdF) < 1e-4 &&
+        Math.abs(parseFloat(c.dataset.k) - rdK) < 1e-4) matched = c;
+    c.classList.remove('active');
+  });
+  if (matched) {
+    matched.classList.add('active');
+    document.getElementById('rd-regime').textContent = matched.querySelector('.param-name').textContent;
+  } else {
+    document.getElementById('rd-regime').textContent = 'Custom';
+  }
+  return true;
+}
+document.getElementById('rd-share').addEventListener('click', () => {
+  const hash = `p=${rdF.toFixed(4)},${rdK.toFixed(4)},${getActiveRegimeName()}`;
+  if (window.EM_SHARE) window.EM_SHARE(hash, 'reaction-diffusion regime');
+});
+
 document.getElementById('rd-speed').addEventListener('input', function() {
   rdSteps = +this.value;
   document.getElementById('rd-speed-val').textContent = this.value;
@@ -686,6 +732,7 @@ function heroRender() {
 
 window.addEventListener('load', () => {
   rdInit();
+  if (decodeRdHash()) rdSeed();          // re-seed under the loaded regime
   rdLoop();
   isingInit();
   isingLoop();

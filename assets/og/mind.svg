@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#07070d"/>
+      <stop offset="100%" stop-color="#0e0e1c"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="78%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="rgba(255,179,71,0.2)"/>
+      <stop offset="100%" stop-color="rgba(7,7,13,0)"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#halo)"/>
+
+  <!-- monospace eyebrow -->
+  <text x="92" y="142" font-family="JetBrains Mono, ui-monospace, monospace"
+        font-size="22" letter-spacing="4.6" fill="#ffb347">CHAPTER 04 · NEURAL EMERGENCE</text>
+
+  <!-- big serif title -->
+  <text x="92" y="290" font-family="Cormorant Garamond, Georgia, serif"
+        font-weight="300" font-size="160" fill="#e6e1d9" letter-spacing="-3">
+    <tspan x="92" y="290">Mind</tspan>
+  </text>
+
+  <!-- footer brand -->
+  <g transform="translate(92,560)">
+    <text font-family="Cormorant Garamond, Georgia, serif" font-weight="500"
+          font-size="32" fill="#e6e1d9" letter-spacing="1.5">EM<tspan fill="#ffb347">ERG</tspan>ENCE</text>
+    <text x="220" y="-1" font-family="JetBrains Mono, ui-monospace, monospace"
+          font-size="15" letter-spacing="3" fill="rgba(230,225,217,0.45)">AN INTERACTIVE JOURNAL ON COMPLEXITY</text>
+  </g>
+
+  <!-- accent line -->
+  <line x1="92" y1="180" x2="190" y2="180" stroke="#ffb347" stroke-width="2" opacity="0.85"/>
+
+  <!-- chapter glyph -->
+  <line x1="820" y1="170" x2="885" y2="178" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="820" y1="170" x2="885" y2="246" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="820" y1="170" x2="885" y2="380" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="820" y1="260" x2="885" y2="178" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="820" y1="260" x2="885" y2="246" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="820" y1="260" x2="885" y2="313" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="820" y1="260" x2="885" y2="380" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="820" y1="350" x2="885" y2="178" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="820" y1="350" x2="885" y2="246" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="820" y1="350" x2="885" y2="313" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="820" y1="350" x2="885" y2="380" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="885" y1="178" x2="950" y2="170" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="885" y1="178" x2="950" y2="278" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="885" y1="178" x2="950" y2="332" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="885" y1="246" x2="950" y2="278" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="885" y1="246" x2="950" y2="386" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="885" y1="313" x2="950" y2="224" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="885" y1="313" x2="950" y2="278" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="885" y1="313" x2="950" y2="332" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="885" y1="313" x2="950" y2="386" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="885" y1="380" x2="950" y2="224" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="885" y1="380" x2="950" y2="386" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="950" y1="170" x2="1015" y2="178" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="950" y1="170" x2="1015" y2="246" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="950" y1="170" x2="1015" y2="313" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="950" y1="170" x2="1015" y2="380" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="950" y1="224" x2="1015" y2="246" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="950" y1="224" x2="1015" y2="313" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="950" y1="278" x2="1015" y2="178" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="950" y1="278" x2="1015" y2="246" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="950" y1="332" x2="1015" y2="178" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="950" y1="332" x2="1015" y2="313" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="950" y1="386" x2="1015" y2="246" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="950" y1="386" x2="1015" y2="380" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="1015" y1="178" x2="1080" y2="170" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="1015" y1="178" x2="1080" y2="350" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="1015" y1="246" x2="1080" y2="170" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="1015" y1="246" x2="1080" y2="260" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<line x1="1015" y1="380" x2="1080" y2="170" stroke="rgba(255,179,71,0.35)" stroke-width="1.1"/>
+<circle cx="820" cy="170" r="6" fill="rgba(255,179,71,0.95)"/>
+<circle cx="820" cy="170" r="14" fill="rgba(255,179,71,0.18)"/>
+<circle cx="820" cy="260" r="6" fill="rgba(255,179,71,0.95)"/>
+<circle cx="820" cy="260" r="14" fill="rgba(255,179,71,0.18)"/>
+<circle cx="820" cy="350" r="6" fill="rgba(255,179,71,0.95)"/>
+<circle cx="820" cy="350" r="14" fill="rgba(255,179,71,0.18)"/>
+<circle cx="885" cy="178" r="6" fill="rgba(255,179,71,0.95)"/>
+<circle cx="885" cy="178" r="14" fill="rgba(255,179,71,0.18)"/>
+<circle cx="885" cy="246" r="6" fill="rgba(255,179,71,0.95)"/>
+<circle cx="885" cy="246" r="14" fill="rgba(255,179,71,0.18)"/>
+<circle cx="885" cy="313" r="6" fill="rgba(255,179,71,0.95)"/>
+<circle cx="885" cy="313" r="14" fill="rgba(255,179,71,0.18)"/>
+<circle cx="885" cy="380" r="6" fill="rgba(255,179,71,0.95)"/>
+<circle cx="885" cy="380" r="14" fill="rgba(255,179,71,0.18)"/>
+<circle cx="950" cy="170" r="6" fill="rgba(255,179,71,0.95)"/>
+<circle cx="950" cy="170" r="14" fill="rgba(255,179,71,0.18)"/>
+<circle cx="950" cy="224" r="6" fill="rgba(255,179,71,0.95)"/>
+<circle cx="950" cy="224" r="14" fill="rgba(255,179,71,0.18)"/>
+<circle cx="950" cy="278" r="6" fill="rgba(255,179,71,0.95)"/>
+<circle cx="950" cy="278" r="14" fill="rgba(255,179,71,0.18)"/>
+<circle cx="950" cy="332" r="6" fill="rgba(255,179,71,0.95)"/>
+<circle cx="950" cy="332" r="14" fill="rgba(255,179,71,0.18)"/>
+<circle cx="950" cy="386" r="6" fill="rgba(255,179,71,0.95)"/>
+<circle cx="950" cy="386" r="14" fill="rgba(255,179,71,0.18)"/>
+<circle cx="1015" cy="178" r="6" fill="rgba(255,179,71,0.95)"/>
+<circle cx="1015" cy="178" r="14" fill="rgba(255,179,71,0.18)"/>
+<circle cx="1015" cy="246" r="6" fill="rgba(255,179,71,0.95)"/>
+<circle cx="1015" cy="246" r="14" fill="rgba(255,179,71,0.18)"/>
+<circle cx="1015" cy="313" r="6" fill="rgba(255,179,71,0.95)"/>
+<circle cx="1015" cy="313" r="14" fill="rgba(255,179,71,0.18)"/>
+<circle cx="1015" cy="380" r="6" fill="rgba(255,179,71,0.95)"/>
+<circle cx="1015" cy="380" r="14" fill="rgba(255,179,71,0.18)"/>
+<circle cx="1080" cy="170" r="6" fill="rgba(255,179,71,0.95)"/>
+<circle cx="1080" cy="170" r="14" fill="rgba(255,179,71,0.18)"/>
+<circle cx="1080" cy="260" r="6" fill="rgba(255,179,71,0.95)"/>
+<circle cx="1080" cy="260" r="14" fill="rgba(255,179,71,0.18)"/>
+<circle cx="1080" cy="350" r="6" fill="rgba(255,179,71,0.95)"/>
+<circle cx="1080" cy="350" r="14" fill="rgba(255,179,71,0.18)"/>
+</svg>

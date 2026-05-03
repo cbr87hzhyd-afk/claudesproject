@@ -4,6 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cosmos — EMERGENCE</title>
+  <meta name="description" content="13.8 billion years of gravitational structure formation — the emergence of galaxies, stars, and the cosmic web.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="canonical" href="https://cbr87hzhyd-afk.github.io/claudesproject/cosmos.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="EMERGENCE">
+  <meta property="og:title" content="Cosmos — Gravity &amp; Structure · EMERGENCE">
+  <meta property="og:description" content="13.8 billion years of gravitational emergence. Galaxies, stars, and the cosmic web. Live N-body.">
+  <meta property="og:image" content="https://cbr87hzhyd-afk.github.io/claudesproject/assets/og/cosmos.svg">
+  <meta property="og:url" content="https://cbr87hzhyd-afk.github.io/claudesproject/cosmos.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Cosmos — EMERGENCE">
+  <meta name="twitter:description" content="13.8 billion years of gravitational emergence.">
+  <meta name="twitter:image" content="https://cbr87hzhyd-afk.github.io/claudesproject/assets/og/cosmos.svg">
+  <meta name="theme-color" content="#07070d">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -144,6 +158,7 @@
           <button class="btn" id="btn-reset">Reset</button>
           <button class="btn" id="btn-spiral">Spiral Galaxy</button>
           <button class="btn" id="btn-collision">Collision</button>
+          <button class="btn" id="btn-share" title="Copy a sharable link to this configuration">⤴ Share</button>
           <div class="spacer"></div>
           <div class="slider-group">
             <span>Gravity</span>
@@ -505,8 +520,61 @@ document.getElementById('btn-reset').addEventListener('click', () => {
   else initRandom();
 });
 
-document.getElementById('btn-spiral').addEventListener('click', () => { time = 0; initSpiral(); });
-document.getElementById('btn-collision').addEventListener('click', () => { time = 0; initCollision(); });
+document.getElementById('btn-spiral').addEventListener('click', () => { time = 0; mode='spiral'; initSpiral(); extras.length = 0; });
+document.getElementById('btn-collision').addEventListener('click', () => { time = 0; mode='collision'; initCollision(); extras.length = 0; });
+
+// ── Share via hash ──────────────────────────────────────────
+// Format: #c=MODE,G,EXTRAS where EXTRAS is "x:y:m:vx:vy;..."
+// Tracks both the chosen mode and any user-placed bodies (clicks + drag-fling).
+const extras = [];
+
+const _origCanvasMouseup = null;       // (no-op placeholder for clarity)
+
+// Patch the existing slingshot release to also push to `extras` for sharing.
+// We do this by intercepting the body push in the mouseup handler — easier:
+// re-register a listener that records every NEW body created via mouse.
+let _bodyCountBeforeMouse = bodies.length;
+canvas.addEventListener('mousedown', () => { _bodyCountBeforeMouse = bodies.length; });
+window.addEventListener('mouseup', () => {
+  // Capture bodies added since the last mousedown
+  for (let i = _bodyCountBeforeMouse; i < bodies.length; i++) {
+    const b = bodies[i];
+    extras.push({ x: b.x / W, y: b.y / H, m: b.mass, vx: b.vx, vy: b.vy });
+  }
+  _bodyCountBeforeMouse = bodies.length;
+});
+
+function encodeCosmosHash() {
+  const ex = extras.map(e =>
+    `${e.x.toFixed(3)}:${e.y.toFixed(3)}:${e.m.toFixed(0)}:${e.vx.toFixed(2)}:${e.vy.toFixed(2)}`
+  ).join(';');
+  return `c=${mode},${G},${ex}`;
+}
+function decodeCosmosHash() {
+  const m = location.hash.match(/^#c=(\w+),([\d.]+),(.*)$/);
+  if (!m) return false;
+  const md = m[1], g = parseFloat(m[2]);
+  G = g;
+  document.getElementById('g-slider').value = g;
+  if (md === 'spiral')         { mode = 'spiral';    initSpiral(); }
+  else if (md === 'collision') { mode = 'collision'; initCollision(); }
+  else                         { mode = 'random';    initRandom(); }
+  // Apply extras
+  if (m[3]) {
+    for (const seg of m[3].split(';')) {
+      if (!seg) continue;
+      const [x, y, mass, vx, vy] = seg.split(':').map(parseFloat);
+      const b = new Body(x * W, y * H, vx, vy, mass, '#fff5cc');
+      bodies.push(b);
+      extras.push({ x, y, m: mass, vx, vy });
+    }
+  }
+  return true;
+}
+
+document.getElementById('btn-share').addEventListener('click', () => {
+  if (window.EM_SHARE) window.EM_SHARE(encodeCosmosHash(), 'cosmos configuration');
+});
 
 document.getElementById('g-slider').addEventListener('input', function() {
   G = +this.value;
@@ -616,7 +684,7 @@ function heroTick() {
 window.addEventListener('load', () => {
   canvas.width = canvas.parentElement.clientWidth || 900;
   W = canvas.width; H = canvas.height;
-  initRandom();
+  if (!decodeCosmosHash()) initRandom();
   loop();
 
   initHero();

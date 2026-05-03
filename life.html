@@ -4,6 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Life — EMERGENCE</title>
+  <meta name="description" content="Conway's Game of Life: three rules, a grid, universal computation. An interactive cellular automaton with classic patterns.">
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="canonical" href="https://cbr87hzhyd-afk.github.io/claudesproject/life.html">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="EMERGENCE">
+  <meta property="og:title" content="Life — Cellular Automata · EMERGENCE">
+  <meta property="og:description" content="Three rules. A grid. Universal computation. Conway's Game of Life, interactive.">
+  <meta property="og:image" content="https://cbr87hzhyd-afk.github.io/claudesproject/assets/og/life.svg">
+  <meta property="og:url" content="https://cbr87hzhyd-afk.github.io/claudesproject/life.html">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Life — EMERGENCE">
+  <meta name="twitter:description" content="Three rules. A grid. Universal computation.">
+  <meta name="twitter:image" content="https://cbr87hzhyd-afk.github.io/claudesproject/assets/og/life.svg">
+  <meta name="theme-color" content="#07070d">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -115,6 +129,7 @@
           <button class="btn btn-danger" id="btn-clear">Clear</button>
           <button class="btn" id="btn-rand">Randomize</button>
           <button class="btn" id="btn-heat">Heat Map</button>
+          <button class="btn" id="btn-share" title="Copy a sharable link to this exact grid">⤴ Share</button>
           <div class="spacer"></div>
           <div class="slider-group">
             <span>Speed</span>
@@ -191,14 +206,59 @@ let generation = 0, running = false, interval = null, fps = 10;
 let lastBirths = 0, lastDeaths = 0;
 let heat, heatMode = false;
 
-function initGrid() {
-  const w = canvas.parentElement.clientWidth || 900;
-  canvas.width = Math.floor(w / CELL) * CELL;
-  COLS = Math.floor(canvas.width / CELL);
-  ROWS = Math.floor(canvas.height / CELL);
+function initGrid(opts) {
+  if (opts && opts.cols && opts.rows) {
+    COLS = opts.cols; ROWS = opts.rows;
+    canvas.width  = COLS * CELL;
+    canvas.height = ROWS * CELL;
+  } else {
+    const w = canvas.parentElement.clientWidth || 900;
+    canvas.width = Math.floor(w / CELL) * CELL;
+    COLS = Math.floor(canvas.width / CELL);
+    ROWS = Math.floor(canvas.height / CELL);
+  }
   grid = new Uint8Array(COLS * ROWS);
   nextGrid = new Uint8Array(COLS * ROWS);
   heat = new Float32Array(COLS * ROWS);
+}
+
+// ── URL-hash sharing ────────────────────────────────────────
+// Format: #l=COLS,ROWS,SPEED,HEAT,B64BITS  (bits packed row-major)
+function packBits(arr) {
+  const bytes = new Uint8Array(Math.ceil(arr.length / 8));
+  for (let i = 0; i < arr.length; i++) if (arr[i]) bytes[i >> 3] |= 1 << (i & 7);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+function unpackBits(b64, len) {
+  const std = b64.replace(/-/g, '+').replace(/_/g, '/');
+  const bin = atob(std);
+  const out = new Uint8Array(len);
+  for (let i = 0; i < len; i++) out[i] = (bin.charCodeAt(i >> 3) >> (i & 7)) & 1;
+  return out;
+}
+function encodeLifeState() {
+  return `l=${COLS},${ROWS},${fps},${heatMode ? 1 : 0},${packBits(grid)}`;
+}
+function decodeLifeStateFromHash() {
+  const h = location.hash;
+  const m = h.match(/^#l=(\d+),(\d+),(\d+),(\d+),(.+)$/);
+  if (!m) return false;
+  const cols = +m[1], rows = +m[2], spd = +m[3], heat0 = +m[4];
+  if (cols < 4 || cols > 600 || rows < 4 || rows > 400) return false;
+  initGrid({ cols, rows });
+  grid = unpackBits(m[5], cols * rows);
+  fps = spd;
+  heatMode = !!heat0;
+  document.getElementById('speed').value = fps;
+  document.getElementById('speed-val').textContent = fps + ' fps';
+  if (heatMode) {
+    btnHeat.classList.add('on');
+    btnHeat.textContent = 'Normal';
+  }
+  generation = 0;
+  return true;
 }
 
 function idx(r, c) { return r * COLS + c; }
@@ -384,6 +444,13 @@ btnHeat.addEventListener('click', () => {
 
 document.getElementById('btn-rand').addEventListener('click', randomize);
 
+document.getElementById('btn-share').addEventListener('click', () => {
+  setRunning(false);
+  const hash = encodeLifeState();
+  if (window.EM_SHARE) window.EM_SHARE(hash, 'live grid');
+  else { history.replaceState(null, '', '#' + hash); }
+});
+
 const speedSlider = document.getElementById('speed');
 speedSlider.addEventListener('input', () => {
   fps = +speedSlider.value;
@@ -503,11 +570,17 @@ initHero();
 setInterval(heroTick, 120);
 
 window.addEventListener('load', () => {
-  initGrid();
-  placePattern('gun');
+  if (decodeLifeStateFromHash()) {
+    draw();
+  } else {
+    initGrid();
+    placePattern('gun');
+  }
 });
 
 window.addEventListener('resize', () => {
+  // Don't auto-resize if a hash-restored grid is active — preserves shared geometry.
+  if (location.hash.startsWith('#l=')) return;
   const wasRunning = running;
   setRunning(false);
   initGrid();

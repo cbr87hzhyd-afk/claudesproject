@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0e0e1c"/>
+      <stop offset="100%" stop-color="#07070d"/>
+    </radialGradient>
+    <radialGradient id="core" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#cfe4ff"/>
+      <stop offset="100%" stop-color="#6eb5ff"/>
+    </radialGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)"/>
+  <!-- six emergent satellites -->
+  <g fill="#6eb5ff">
+    <circle cx="32" cy="13" r="2.6"/>
+    <circle cx="48.5" cy="22" r="2.6"/>
+    <circle cx="48.5" cy="42" r="2.6"/>
+    <circle cx="32" cy="51" r="2.6"/>
+    <circle cx="15.5" cy="42" r="2.6"/>
+    <circle cx="15.5" cy="22" r="2.6"/>
+  </g>
+  <!-- subtle orbit ring -->
+  <circle cx="32" cy="32" r="19" fill="none" stroke="#6eb5ff" stroke-width="0.8" opacity="0.25"/>
+  <!-- bright core -->
+  <circle cx="32" cy="32" r="6.5" fill="url(#core)"/>
+  <circle cx="32" cy="32" r="11" fill="#6eb5ff" opacity="0.18"/>
+</svg>

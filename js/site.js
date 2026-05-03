@@ -334,6 +334,22 @@ function whisper(msg) {
   if (window.EM_SOUND) window.EM_SOUND.chordPing(2, 0.05, 2.0);
 }
 
+// ─── Share helper (clipboard + toast) ────────────────────────────────────────
+// Used by Life / Patterns / Cosmos share buttons.
+window.EM_SHARE = function (hash, label) {
+  const path = location.origin + location.pathname + '#' + hash;
+  history.replaceState(null, '', '#' + hash);
+  const fallback = () => prompt(`Copy this link to share — ${label || ''}`, path);
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(path).then(
+      () => toast(`Link copied${label ? ' — ' + label : ''}`),
+      fallback
+    );
+  } else {
+    fallback();
+  }
+};
+
 // Hidden-quote spans: click to whisper an embedded line.
 function initHiddenQuotes() {
   document.querySelectorAll('.hidden-quote').forEach(el => {

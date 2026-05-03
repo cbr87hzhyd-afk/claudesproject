@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#07070d"/>
+      <stop offset="100%" stop-color="#0e0e1c"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="78%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="rgba(74,222,128,0.2)"/>
+      <stop offset="100%" stop-color="rgba(7,7,13,0)"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#halo)"/>
+
+  <!-- monospace eyebrow -->
+  <text x="92" y="142" font-family="JetBrains Mono, ui-monospace, monospace"
+        font-size="22" letter-spacing="4.6" fill="#4ade80">CHAPTER 01 · CELLULAR AUTOMATA</text>
+
+  <!-- big serif title -->
+  <text x="92" y="290" font-family="Cormorant Garamond, Georgia, serif"
+        font-weight="300" font-size="160" fill="#e6e1d9" letter-spacing="-3">
+    <tspan x="92" y="290">Life</tspan>
+  </text>
+
+  <!-- footer brand -->
+  <g transform="translate(92,560)">
+    <text font-family="Cormorant Garamond, Georgia, serif" font-weight="500"
+          font-size="32" fill="#e6e1d9" letter-spacing="1.5">EM<tspan fill="#4ade80">ERG</tspan>ENCE</text>
+    <text x="220" y="-1" font-family="JetBrains Mono, ui-monospace, monospace"
+          font-size="15" letter-spacing="3" fill="rgba(230,225,217,0.45)">AN INTERACTIVE JOURNAL ON COMPLEXITY</text>
+  </g>
+
+  <!-- accent line -->
+  <line x1="92" y1="180" x2="190" y2="180" stroke="#4ade80" stroke-width="2" opacity="0.85"/>
+
+  <!-- chapter glyph -->
+  <rect x="902" y="127" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="924" y="149" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="946" y="171" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="924" y="171" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="924" y="193" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="990" y="215" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="1012" y="215" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="1034" y="215" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="1012" y="193" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="1012" y="237" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="1056" y="127" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="1078" y="149" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="1078" y="171" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="968" y="281" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="990" y="281" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="1012" y="281" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="990" y="259" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="990" y="303" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="1100" y="237" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="1100" y="259" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="1122" y="237" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="1122" y="259" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="1056" y="303" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="1078" y="303" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+<rect x="1100" y="303" width="19" height="19" rx="2" fill="rgba(74,222,128,0.85)"/>
+</svg>

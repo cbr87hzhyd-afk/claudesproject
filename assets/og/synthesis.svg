@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#07070d"/>
+      <stop offset="100%" stop-color="#0e0e1c"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="78%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="rgba(245,215,110,0.2)"/>
+      <stop offset="100%" stop-color="rgba(7,7,13,0)"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#halo)"/>
+
+  <!-- monospace eyebrow -->
+  <text x="92" y="142" font-family="JetBrains Mono, ui-monospace, monospace"
+        font-size="22" letter-spacing="4.6" fill="#f5d76e">CHAPTER 06 · COMPOSITION</text>
+
+  <!-- big serif title -->
+  <text x="92" y="290" font-family="Cormorant Garamond, Georgia, serif"
+        font-weight="300" font-size="160" fill="#e6e1d9" letter-spacing="-3">
+    <tspan x="92" y="290">Synthesis</tspan>
+  </text>
+
+  <!-- footer brand -->
+  <g transform="translate(92,560)">
+    <text font-family="Cormorant Garamond, Georgia, serif" font-weight="500"
+          font-size="32" fill="#e6e1d9" letter-spacing="1.5">EM<tspan fill="#f5d76e">ERG</tspan>ENCE</text>
+    <text x="220" y="-1" font-family="JetBrains Mono, ui-monospace, monospace"
+          font-size="15" letter-spacing="3" fill="rgba(230,225,217,0.45)">AN INTERACTIVE JOURNAL ON COMPLEXITY</text>
+  </g>
+
+  <!-- accent line -->
+  <line x1="92" y1="180" x2="190" y2="180" stroke="#f5d76e" stroke-width="2" opacity="0.85"/>
+
+  <!-- chapter glyph -->
+  <rect x="840" y="180" width="13" height="13" rx="2" fill="rgba(245,215,110,0.7)"/>
+<rect x="856" y="180" width="13" height="13" rx="2" fill="rgba(245,215,110,0.7)"/>
+<rect x="840" y="196" width="13" height="13" rx="2" fill="rgba(245,215,110,0.7)"/>
+<rect x="872" y="196" width="13" height="13" rx="2" fill="rgba(245,215,110,0.7)"/>
+<rect x="872" y="212" width="13" height="13" rx="2" fill="rgba(245,215,110,0.7)"/>
+<rect x="856" y="212" width="13" height="13" rx="2" fill="rgba(245,215,110,0.7)"/>
+<polyline points="994.9,322.6 993.1,323.5 991.2,324.0 989.2,324.0 987.2,323.7 985.4,322.9 983.8,321.7 982.4,320.2 981.4,318.4 980.9,316.5 980.7,314.5 981.0,312.4 981.8,310.5 982.9,308.8 984.4,307.4 986.2,306.3 988.2,305.7 990.3,305.4 992.4,305.7 994.4,306.4 996.2,307.5 997.7,309.0 998.8,310.8 999.6,312.8 999.9,315.0 999.7,317.1 999.0,319.2 998.0,321.1 996.5,322.8 994.6,324.0 992.6,324.9 990.3,325.3 988.1,325.1 985.9,324.5 983.9,323.5 982.1,322.0 980.7,320.1 979.8,318.0 979.3,315.7 979.3,313.3 979.9,311.0 980.9,308.9 982.4,307.0 984.3,305.4 986.5,304.4 988.9,303.8 991.4,303.7 993.9,304.2 996.2,305.2 998.2,306.8 999.9,308.7 1001.1,311.0 1001.9,313.5 1002.0,316.1 1001.6,318.8 1000.6,321.2 999.0,323.5 997.0,325.3 994.6,326.7 992.0,327.6 989.2,327.8 986.4,327.5 983.7,326.5 981.2,325.0 979.1,322.9 977.6,320.4 976.5,317.6 976.1,314.6 976.4,311.5 977.4,308.6 979.0,305.8 981.1,303.5 983.8,301.7 986.8,300.5 990.0,299.9 993.3,300.1 996.6,301.0 999.6,302.7 1002.2,304.9 1004.3,307.7" fill="none" stroke="rgba(245,215,110,0.9)" stroke-width="2"/>
+<g transform="translate(1138.4,360.9) rotate(191.5)" fill="rgba(245,215,110,0.75)"><path d="M12 0 L-7 -4 L-4 0 L-7 4 Z"/></g>
+<g transform="translate(1121.2,396.5) rotate(220.1)" fill="rgba(245,215,110,0.75)"><path d="M12 0 L-7 -4 L-4 0 L-7 4 Z"/></g>
+<g transform="translate(1089.0,419.6) rotate(248.8)" fill="rgba(245,215,110,0.75)"><path d="M12 0 L-7 -4 L-4 0 L-7 4 Z"/></g>
+<g transform="translate(1049.7,424.3) rotate(277.4)" fill="rgba(245,215,110,0.75)"><path d="M12 0 L-7 -4 L-4 0 L-7 4 Z"/></g>
+<g transform="translate(1012.9,409.7) rotate(306.1)" fill="rgba(245,215,110,0.75)"><path d="M12 0 L-7 -4 L-4 0 L-7 4 Z"/></g>
+<circle cx="880" cy="380" r="5" fill="rgba(245,215,110,0.95)"/>
+<circle cx="920" cy="410" r="5" fill="rgba(245,215,110,0.95)"/>
+<circle cx="970" cy="430" r="5" fill="rgba(245,215,110,0.95)"/>
+<circle cx="1020" cy="410" r="5" fill="rgba(245,215,110,0.95)"/>
+<circle cx="1060" cy="380" r="5" fill="rgba(245,215,110,0.95)"/>
+<polyline points="880,380 920,410 970,430 1020,410 1060,380" fill="none" stroke="rgba(245,215,110,0.4)" stroke-width="1.1"/>
+<circle cx="900" cy="255" r="6" fill="#fff5cc"/>
+</svg>
