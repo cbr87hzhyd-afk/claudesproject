@@ -34,7 +34,7 @@
     }
   </style>
 </head>
-<body>
+<body class="page-home">
 
 <nav>
   <a class="nav-logo" href="index.html">EM<span>ERG</span>ENCE</a>
@@ -53,11 +53,11 @@
     <canvas class="hero-canvas" id="boids-canvas"></canvas>
     <div class="hero-content">
       <p class="hero-eyebrow">An interactive journal · Six chapters</p>
-      <h1 class="hero-title">From <em>simple</em> rules,<br>infinite complexity</h1>
+      <h1 class="hero-title">More<br>is <em>different.</em></h1>
       <p class="hero-sub">
-        Emergence is the phenomenon by which a system exhibits properties
-        that none of its parts possess alone. It is how flocking arises from birds,
-        consciousness from neurons, and galaxies from gravity.
+        At each level of complexity, entirely new properties appear — properties that no
+        amount of reductionist analysis could ever predict. This is emergence, and it is
+        how the universe built everything from almost nothing.
       </p>
     </div>
     <div class="scroll-hint">
@@ -193,6 +193,16 @@ const MAX_FORCE = 0.07;
 const SEP_R = 28;
 const ALI_R = 58;
 const COH_R = 80;
+const FLEE_R = 130;    // radius at which boids flee cursor
+const FLEE_F = 0.28;  // flee force magnitude
+
+let mouseX = -9999, mouseY = -9999;
+window.addEventListener('mousemove', e => {
+  const r = canvas.getBoundingClientRect();
+  mouseX = (e.clientX - r.left) * (canvas.width / r.width);
+  mouseY = (e.clientY - r.top)  * (canvas.height / r.height);
+});
+canvas.addEventListener('mouseleave', () => { mouseX = -9999; mouseY = -9999; });
 
 class Boid {
   constructor() {
@@ -242,6 +252,15 @@ function flock(b) {
     [dx,dy] = clamp(dx, dy, MAX_FORCE);
     fx += dx; fy += dy;
   }
+  // Flee cursor
+  const mdx = b.x - mouseX, mdy = b.y - mouseY;
+  const md  = Math.hypot(mdx, mdy);
+  if (md < FLEE_R && md > 0) {
+    const strength = Math.pow(1 - md / FLEE_R, 2) * FLEE_F;
+    fx += (mdx / md) * strength;
+    fy += (mdy / md) * strength;
+  }
+
   b.ax = fx; b.ay = fy;
 }
 
@@ -280,5 +299,6 @@ function tick() {
 }
 tick();
 </script>
+<script src="js/site.js"></script>
 </body>
 </html>
