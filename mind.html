@@ -68,7 +68,7 @@
   <ul class="nav-links">
     <li><a href="index.html">Overview</a></li>
     <li><a href="life.html">Life</a></li>
-    <li><a href="patterns.html">Patterns</a></li>
+    <li><a href="form.html">Form</a></li>
     <li><a href="patterns.html">Patterns</a></li>
     <li><a href="mind.html" class="active">Mind</a></li>
     <li><a href="cosmos.html">Cosmos</a></li>
@@ -79,7 +79,7 @@
   <section class="hero">
     <canvas class="hero-canvas" id="mind-hero"></canvas>
     <div class="hero-content">
-      <p class="hero-eyebrow">Chapter 03 · Neural Emergence</p>
+      <p class="hero-eyebrow">Chapter 04 · Neural Emergence</p>
       <h1 class="hero-title"><em>Mind</em></h1>
       <p class="hero-sub">
         Eighty-six billion neurons. One hundred trillion synapses.
@@ -142,7 +142,7 @@
         <canvas id="net-canvas" height="420"></canvas>
         <div class="controls">
           <button class="btn" id="btn-stim">⚡ Stimulate</button>
-          <button class="btn" id="btn-auto" class="on">Auto</button>
+          <button class="btn on" id="btn-auto">Auto</button>
           <div class="spacer"></div>
           <div class="slider-group">
             <span>Density</span>
@@ -381,6 +381,26 @@ function drawFrame() {
 
 document.getElementById('btn-stim').addEventListener('click', () => stimulate(0));
 
+// Click anywhere on the network canvas to ignite the nearest neuron.
+canvas.addEventListener('click', e => {
+  const rect = canvas.getBoundingClientRect();
+  const mx = (e.clientX - rect.left) * (canvas.width / rect.width);
+  const my = (e.clientY - rect.top)  * (canvas.height / rect.height);
+  let best = -1, bd = Infinity;
+  for (let i = 0; i < nodes.length; i++) {
+    const d = (nodes[i].x - mx) ** 2 + (nodes[i].y - my) ** 2;
+    if (d < bd) { bd = d; best = i; }
+  }
+  if (best < 0) return;
+  const n = nodes[best];
+  n.activation = 1;
+  const out = edges.filter(e => e.from === n.id);
+  for (const e of out) if (Math.random() < e.weight) {
+    pulses.push({ edge: e, t: 0, speed: 0.012 + Math.random() * 0.018 });
+  }
+  if (window.EM_SOUND) window.EM_SOUND.chordPing(n.layer % 4, 0.05, 1.2);
+});
+
 const btnAuto = document.getElementById('btn-auto');
 btnAuto.classList.add('on');
 btnAuto.addEventListener('click', () => {
@@ -509,6 +529,7 @@ window.addEventListener('resize', () => {
   initHero();
 });
 </script>
+<script src="js/sound.js"></script>
 <script src="js/site.js"></script>
 </body>
 </html>

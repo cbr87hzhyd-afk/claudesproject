@@ -101,7 +101,9 @@
       <p class="section-tag">Interactive</p>
       <h2 class="section-title">Navigate infinite complexity</h2>
       <p class="prose" style="margin-bottom:0">
-        <strong>Click</strong> to zoom in · <strong>Right-click</strong> to zoom out · Use <em>Presets</em> to jump to famous locations.
+        <strong>Click</strong> to zoom in · <strong>Right-click</strong> to zoom out ·
+        <strong>Wheel</strong> for fluid zoom · <strong>Shift-drag</strong> to pan ·
+        Use <em>Presets</em> to jump to famous locations.
         Each zoom reveals structures that look like the whole but never repeat exactly.
         You can zoom to 10<sup>13</sup>× — the boundary never simplifies.
       </p>
@@ -367,6 +369,42 @@ canvas.addEventListener('contextmenu', e => {
   render();
 });
 
+// ── Wheel zoom (debounced) ───────────────────────────────────
+let wheelTimer = null;
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  const cx = e.offsetX / canvas.width;
+  const cy = e.offsetY / canvas.height;
+  // Negative deltaY = scroll up = zoom in
+  const factor = e.deltaY < 0 ? 0.78 : 1 / 0.78;
+  zoomTo(cx, cy, factor);
+  // Quick preview render via the existing chunked renderer
+  if (wheelTimer) clearTimeout(wheelTimer);
+  wheelTimer = setTimeout(() => { pushHistory(); render(); }, 90);
+}, { passive: false });
+
+// Drag-pan (left-mouse drag without click)
+let dragStart = null, viewStart = null;
+canvas.addEventListener('mousedown', e => {
+  if (e.button !== 0) return;
+  if (e.shiftKey) { // shift-drag = pan
+    dragStart = { x: e.offsetX, y: e.offsetY };
+    viewStart = { ...view };
+    canvas.style.cursor = 'grabbing';
+  }
+});
+canvas.addEventListener('mousemove', e => {
+  if (!dragStart) return;
+  const xRange = viewStart.xMax - viewStart.xMin;
+  const yRange = viewStart.yMax - viewStart.yMin;
+  const dx = (e.offsetX - dragStart.x) / canvas.width  * xRange;
+  const dy = (e.offsetY - dragStart.y) / canvas.height * yRange;
+  view.xMin = viewStart.xMin - dx; view.xMax = viewStart.xMax - dx;
+  view.yMin = viewStart.yMin - dy; view.yMax = viewStart.yMax - dy;
+  render();
+});
+window.addEventListener('mouseup', () => { dragStart = null; canvas.style.cursor = 'crosshair'; });
+
 document.getElementById('btn-back').addEventListener('click', () => {
   if (zoomHistory.length > 0) {
     view = zoomHistory.pop();
@@ -484,6 +522,7 @@ window.addEventListener('resize', () => {
   render();
 });
 </script>
+<script src="js/sound.js"></script>
 <script src="js/site.js"></script>
 </body>
 </html>

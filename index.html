@@ -92,7 +92,7 @@
           it seems to conjure <strong>something from nothing</strong>. New causal powers appear at
           higher levels of organization that appear irreducible to the substrate. The question
           of whether this irreducibility is fundamental, or merely a reflection of our limited
-          computational grasp, remains one of the deepest open problems in science.
+          computational grasp, remains one of the deepest open problems in <span class="hidden-quote" data-q="The universe — which others call the Library — is composed of an indefinite, perhaps infinite, number of hexagonal galleries. &mdash; J.L. Borges">science</span>.
         </p>
       </div>
 
@@ -187,14 +187,14 @@ function resize() {
 resize();
 new ResizeObserver(resize).observe(canvas);
 
-const N = window.innerWidth < 600 ? 90 : 200;
+const N = window.innerWidth < 600 ? 110 : 260;
 const MAX_SPEED = 3.2;
 const MAX_FORCE = 0.07;
 const SEP_R = 28;
 const ALI_R = 58;
 const COH_R = 80;
-const FLEE_R = 130;    // radius at which boids flee cursor
-const FLEE_F = 0.28;  // flee force magnitude
+const FLEE_R = 130;
+const FLEE_F = 0.28;
 
 let mouseX = -9999, mouseY = -9999;
 window.addEventListener('mousemove', e => {
@@ -212,10 +212,95 @@ class Boid {
     this.vx = Math.cos(a) * MAX_SPEED * 0.6;
     this.vy = Math.sin(a) * MAX_SPEED * 0.6;
     this.ax = 0; this.ay = 0;
+    this.tx = null; this.ty = null;       // optional target (word formation)
   }
 }
 
 const boids = Array.from({length: N}, () => new Boid());
+
+// ── Click → scatter shockwave (jolt + sfx) ─────────────────────
+let shockUntil = 0;     // boost the speed cap briefly after a scatter
+canvas.addEventListener('click', e => {
+  const r = canvas.getBoundingClientRect();
+  const mx = (e.clientX - r.left) * (canvas.width / r.width);
+  const my = (e.clientY - r.top)  * (canvas.height / r.height);
+  const R = 240;
+  // Cancel any in-flight word formation: a click should disrupt
+  if (formMode !== 0) clearForm();
+  for (const b of boids) {
+    const dx = b.x - mx, dy = b.y - my;
+    const d = Math.hypot(dx, dy) || 1;
+    if (d < R) {
+      const f = (1 - d / R);
+      // Direction
+      const ux = dx / d, uy = dy / d;
+      // Instant displacement (jolt) and a velocity boost
+      b.x += ux * f * 30;
+      b.y += uy * f * 30;
+      b.vx = ux * MAX_SPEED * (1.5 + f * 1.5);
+      b.vy = uy * MAX_SPEED * (1.5 + f * 1.5);
+    }
+  }
+  shockUntil = performance.now() + 600;
+  if (window.EM_SOUND) window.EM_SOUND.whoosh(0.55, 0.05);
+});
+
+// ── Word formation: every ~22s, briefly steer into "EMERGENCE" ─
+let wordTargets = null;
+function buildEmergenceTargets() {
+  const off = document.createElement('canvas');
+  off.width  = Math.min(900, canvas.width);
+  off.height = Math.max(180, Math.floor(canvas.height * 0.35));
+  const c = off.getContext('2d');
+  c.fillStyle = '#fff';
+  const fs = Math.floor(off.height * 0.78);
+  c.font = `300 ${fs}px "Cormorant Garamond", Georgia, serif`;
+  c.textAlign = 'center';
+  c.textBaseline = 'middle';
+  c.fillText('EMERGENCE', off.width / 2, off.height / 2);
+  const data = c.getImageData(0, 0, off.width, off.height).data;
+  const pts = [];
+  const stride = 9;
+  for (let y = 0; y < off.height; y += stride)
+    for (let x = 0; x < off.width; x += stride)
+      if (data[(y * off.width + x) * 4 + 3] > 80) pts.push([x, y]);
+  // Center this on the canvas
+  const ox = (canvas.width  - off.width)  / 2;
+  const oy = (canvas.height - off.height) / 2;
+  return pts.map(([x, y]) => [x + ox, y + oy]);
+}
+
+let formMode = 0;     // 0 idle, 1 forming, 2 holding, 3 dispersing
+let formStart = 0;
+function tryForm() {
+  wordTargets = buildEmergenceTargets();
+  // Assign each boid the nearest unused target (greedy enough)
+  const used = new Uint8Array(wordTargets.length);
+  for (const b of boids) {
+    let best = -1, bd = Infinity;
+    for (let j = 0; j < wordTargets.length; j++) {
+      if (used[j]) continue;
+      const dx = wordTargets[j][0] - b.x, dy = wordTargets[j][1] - b.y;
+      const d = dx * dx + dy * dy;
+      if (d < bd) { bd = d; best = j; }
+    }
+    if (best >= 0) {
+      used[best] = 1;
+      b.tx = wordTargets[best][0];
+      b.ty = wordTargets[best][1];
+    } else { b.tx = null; b.ty = null; }
+  }
+  formMode = 1;
+  formStart = performance.now();
+}
+function clearForm() {
+  for (const b of boids) { b.tx = null; b.ty = null; }
+  formMode = 0;
+}
+
+// First formation a few seconds in, then on a slow cadence
+setTimeout(() => { if (Math.random() < 0.8) tryForm(); }, 9000);
+setInterval(() => { if (formMode === 0 && Math.random() < 0.5) tryForm(); }, 26000);
 
 function clamp(vx, vy, max) {
   const m = Math.hypot(vx, vy);
@@ -261,18 +346,33 @@ function flock(b) {
     fy += (mdy / md) * strength;
   }
 
+  // Word-formation target — overrides flock with a strong seek
+  if ((formMode === 1 || formMode === 2) && b.tx !== null) {
+    const tdx = b.tx - b.x, tdy = b.ty - b.y;
+    const td = Math.hypot(tdx, tdy) || 1;
+    const seek = formMode === 2 ? 0.35 : 0.18;
+    fx = (tdx / td) * MAX_SPEED * seek - b.vx * 0.04;
+    fy = (tdy / td) * MAX_SPEED * seek - b.vy * 0.04;
+  }
+
   b.ax = fx; b.ay = fy;
 }
 
 function tick() {
+  // Lifecycle: forming(2.5s) → holding(2.8s) → dispersing(1.4s)
+  if (formMode === 1 && performance.now() - formStart > 2500) { formMode = 2; formStart = performance.now(); }
+  else if (formMode === 2 && performance.now() - formStart > 2800) { formMode = 3; formStart = performance.now(); }
+  else if (formMode === 3 && performance.now() - formStart > 1400) { clearForm(); }
+
   ctx.fillStyle = 'rgba(7,7,13,0.18)';
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+  const cap = performance.now() < shockUntil ? MAX_SPEED * 2.4 : MAX_SPEED;
   for (const b of boids) {
     flock(b);
     b.vx += b.ax; b.vy += b.ay;
     const sp = Math.hypot(b.vx, b.vy);
-    if (sp > MAX_SPEED) { b.vx = b.vx/sp*MAX_SPEED; b.vy = b.vy/sp*MAX_SPEED; }
+    if (sp > cap) { b.vx = b.vx/sp*cap; b.vy = b.vy/sp*cap; }
     if (sp < 0.5) { b.vx *= 1.05; b.vy *= 1.05; }
     b.x = (b.x + b.vx + canvas.width) % canvas.width;
     b.y = (b.y + b.vy + canvas.height) % canvas.height;
@@ -299,6 +399,7 @@ function tick() {
 }
 tick();
 </script>
+<script src="js/sound.js"></script>
 <script src="js/site.js"></script>
 </body>
 </html>

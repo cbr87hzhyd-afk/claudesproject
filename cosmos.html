@@ -74,7 +74,7 @@
   <section class="hero">
     <canvas class="hero-canvas" id="cosmos-hero"></canvas>
     <div class="hero-content">
-      <p class="hero-eyebrow">Chapter 04 · Gravity &amp; Structure</p>
+      <p class="hero-eyebrow">Chapter 05 · Gravity &amp; Structure</p>
       <h1 class="hero-title"><em>Cosmos</em></h1>
       <p class="hero-sub">
         The universe began as an almost perfectly uniform plasma.
@@ -132,7 +132,9 @@
       <h2 class="section-title">Watch structure form</h2>
       <p class="prose" style="margin-bottom: 0">
         A gravitational simulation of particle clouds. Watch as particles cluster,
-        orbit, and merge under mutual attraction. Click to add a massive attractor.
+        orbit, and merge under mutual attraction.
+        <strong>Click</strong> to drop a massive stationary attractor —
+        <strong>drag</strong> to fling a body along the drag vector (longer drag = faster, heavier).
       </p>
 
       <div class="canvas-wrap">
@@ -404,24 +406,89 @@ function render() {
   }
 }
 
+let lastMergeCount = 0;
 function loop() {
   if (!running) { requestAnimationFrame(loop); return; }
   const ke = stepSim();
   render();
+  drawDragIndicator();
   document.getElementById('stat-bodies').textContent = bodies.length;
   document.getElementById('stat-ke').textContent = Math.round(ke / 1000) + 'k';
   document.getElementById('stat-t').textContent = time;
   document.getElementById('stat-mergers').textContent = mergeCount;
+  // Soft sfx on each merger
+  if (mergeCount > lastMergeCount) {
+    const delta = mergeCount - lastMergeCount;
+    if (window.EM_SOUND) {
+      for (let i = 0; i < Math.min(3, delta); i++) {
+        setTimeout(() => window.EM_SOUND.chordPing(i, 0.04, 1.0), i * 90);
+      }
+    }
+    lastMergeCount = mergeCount;
+  }
   requestAnimationFrame(loop);
 }
 
-// Click to add massive body
-canvas.addEventListener('click', e => {
+// ── Drag-to-fling slingshot ──────────────────────────────────
+// Click = drop a heavy attractor (no drag).
+// Press + drag = create a body whose initial velocity is the drag vector.
+let drag = null;
+
+function toCanvasCoords(e) {
   const rect = canvas.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-  bodies.push(new Body(x * (W / rect.width), y * (H / rect.height), 0, 0, 200, '#fff5cc'));
+  return {
+    x: (e.clientX - rect.left) * (W / rect.width),
+    y: (e.clientY - rect.top)  * (H / rect.height)
+  };
+}
+
+canvas.addEventListener('mousedown', e => {
+  drag = { ...toCanvasCoords(e), startedAt: performance.now() };
 });
+
+canvas.addEventListener('mousemove', e => {
+  if (!drag) return;
+  drag.cur = toCanvasCoords(e);
+});
+
+window.addEventListener('mouseup', e => {
+  if (!drag) return;
+  const end = drag.cur || drag;
+  const dx = end.x - drag.x, dy = end.y - drag.y;
+  const dist = Math.hypot(dx, dy);
+  if (dist < 8) {
+    // Treated as a click: heavy stationary attractor
+    bodies.push(new Body(drag.x, drag.y, 0, 0, 220, '#fff5cc'));
+  } else {
+    // Slingshot: small mass, velocity proportional to drag length
+    const v = Math.min(8, dist * 0.04);
+    const ang = Math.atan2(dy, dx);
+    const mass = 12 + Math.min(40, dist * 0.05);
+    bodies.push(new Body(drag.x, drag.y, Math.cos(ang) * v, Math.sin(ang) * v,
+      mass, `hsl(${30 + Math.random() * 40}, 90%, 78%)`));
+    if (window.EM_SOUND) window.EM_SOUND.whoosh(0.4, 0.05);
+  }
+  drag = null;
+});
+
+// Render the drag indicator on top each frame
+function drawDragIndicator() {
+  if (!drag || !drag.cur) return;
+  ctx.save();
+  ctx.strokeStyle = 'rgba(255, 245, 204, 0.55)';
+  ctx.setLineDash([4, 6]);
+  ctx.lineWidth = 1.2;
+  ctx.beginPath();
+  ctx.moveTo(drag.x, drag.y);
+  ctx.lineTo(drag.cur.x, drag.cur.y);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.beginPath();
+  ctx.arc(drag.x, drag.y, 4, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(255, 245, 204, 0.85)';
+  ctx.fill();
+  ctx.restore();
+}
 
 // Controls
 const btnPause = document.getElementById('btn-pause');
@@ -569,6 +636,7 @@ window.addEventListener('resize', () => {
   else initRandom();
 });
 </script>
+<script src="js/sound.js"></script>
 <script src="js/site.js"></script>
 </body>
 </html>

@@ -41,6 +41,7 @@ body.page-form     { --accent: #c084fc; --accent-rgb: 192, 132, 252; --border-ac
 body.page-patterns { --accent: #e879f9; --accent-rgb: 232, 121, 249; --border-accent: rgba(232,121,249,0.22); }
 body.page-mind     { --accent: #ffb347; --accent-rgb: 255, 179, 71;  --border-accent: rgba(255,179,71,0.22); }
 body.page-cosmos   { --accent: #22d3ee; --accent-rgb: 34, 211, 238;  --border-accent: rgba(34,211,238,0.22); }
+body.page-coda     { --accent: #f1f1f7; --accent-rgb: 241, 241, 247; --border-accent: rgba(241,241,247,0.20); }
 
 /* ─── Reset ──────────────────────────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -885,4 +886,345 @@ footer a:hover { opacity: 0.75; }
   .hero-eyebrow, .hero-title, .hero-sub, .scroll-hint { animation: none; opacity: 1; }
   @view-transition { navigation: none; }
   #intro-overlay { display: none; }
+  body.breathing { animation: none; }
+  .cursor-trail, .em-spark { display: none; }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   POLISH PASS II — breath, particle trail, sound toggle,
+   easter-egg surfaces, Coda chapter palette
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─── Page breath ─────────────────────────────────────────────── */
+/* A near-imperceptible global pulse — ~10s cycle, ~0.3% gain. */
+body.breathing {
+  animation: page-breath 11s ease-in-out infinite;
+}
+@keyframes page-breath {
+  0%, 100% { filter: brightness(1) saturate(1); }
+  50%      { filter: brightness(1.018) saturate(1.025); }
+}
+
+/* ─── Cursor: precise dot ─────────────────────────────────────── */
+#cursor-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 6px; height: 6px;
+  margin-left: -3px; margin-top: -3px;
+  border-radius: 50%;
+  background: rgba(var(--accent-rgb), 0.85);
+  box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.6);
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: screen;
+  transition: width 0.2s ease, height 0.2s ease, opacity 0.2s ease;
+  will-change: transform;
+}
+#cursor-dot.cursor-over {
+  width: 14px; height: 14px;
+  margin-left: -7px; margin-top: -7px;
+  background: rgba(var(--accent-rgb), 0.45);
+  box-shadow: 0 0 14px rgba(var(--accent-rgb), 0.45);
+}
+
+/* ─── Cursor trail particles ──────────────────────────────────── */
+.cursor-trail {
+  position: fixed;
+  width: 4px; height: 4px;
+  margin-left: -2px; margin-top: -2px;
+  border-radius: 50%;
+  background: rgba(var(--accent-rgb), 0.45);
+  pointer-events: none;
+  z-index: 9997;
+  mix-blend-mode: screen;
+  animation: trail-fade 0.65s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+@keyframes trail-fade {
+  0%   { opacity: 0.6; transform: translate(0, 0) scale(1); }
+  100% { opacity: 0;   transform: translate(var(--dx, 0), var(--dy, 0)) scale(0.2); }
+}
+
+/* ─── Sound toggle (in nav) ───────────────────────────────────── */
+#sound-toggle {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px; height: 30px;
+  margin-left: 0.6rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  flex-shrink: 0;
+}
+#sound-toggle:hover {
+  color: var(--accent);
+  border-color: var(--border-accent);
+  background: rgba(var(--accent-rgb), 0.05);
+}
+#sound-toggle:not(.muted) {
+  color: var(--accent);
+}
+#sound-toggle:not(.muted)::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 8px;
+  border: 1px solid rgba(var(--accent-rgb), 0.18);
+  animation: sound-ring 3.6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes sound-ring {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%      { opacity: 0.85; transform: scale(1.18); }
+}
+
+/* ─── Toast & whisper ─────────────────────────────────────────── */
+.em-toast {
+  position: fixed;
+  bottom: 2rem; left: 50%;
+  transform: translateX(-50%) translateY(40px);
+  background: rgba(7, 7, 13, 0.96);
+  border: 1px solid var(--border-accent);
+  border-radius: 30px;
+  padding: 0.8rem 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.05em;
+  color: var(--text);
+  z-index: 9996;
+  opacity: 0;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(var(--accent-rgb), 0.08);
+  backdrop-filter: blur(12px);
+  transition: opacity 0.45s ease, transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.em-toast.in {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+.em-toast a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dashed rgba(var(--accent-rgb), 0.35);
+  padding-bottom: 1px;
+  font-size: 0.75rem;
+  transition: border-color 0.2s;
+}
+.em-toast a:hover { border-bottom-color: var(--accent); }
+
+.em-whisper {
+  position: fixed;
+  bottom: 1.6rem; right: 1.6rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--text-dim);
+  opacity: 0;
+  transition: opacity 1s ease;
+  pointer-events: none;
+  z-index: 9996;
+  max-width: 280px;
+  text-align: right;
+  line-height: 1.5;
+  text-shadow: 0 0 24px rgba(7, 7, 13, 0.95);
+}
+.em-whisper.in { opacity: 0.8; }
+
+/* ─── Synaesthesia spark ──────────────────────────────────────── */
+.em-spark {
+  position: fixed;
+  width: 4px; height: 4px;
+  margin-left: -2px; margin-top: -2px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.8);
+  pointer-events: none;
+  z-index: 9995;
+  mix-blend-mode: screen;
+  animation: spark-fly 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes spark-fly {
+  0%   { opacity: 1;   transform: translate(0, 0) scale(1); }
+  100% { opacity: 0;   transform: translate(var(--dx, 0), var(--dy, 0)) scale(0.2); }
+}
+
+body.synaesthesia #cursor-dot {
+  background: rgba(var(--accent-rgb), 1);
+  box-shadow: 0 0 14px rgba(var(--accent-rgb), 0.9), 0 0 28px rgba(var(--accent-rgb), 0.5);
+}
+
+/* ─── Footer Coda dot (hidden until unlocked) ─────────────────── */
+.coda-dot {
+  display: inline-block;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  margin: 0.5rem auto 0;
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.6s, transform 0.6s, background 0.3s, box-shadow 0.3s;
+  text-decoration: none;
+  pointer-events: none;
+}
+.coda-dot.on {
+  opacity: 0.55;
+  transform: scale(1);
+  pointer-events: auto;
+  background: var(--accent);
+  box-shadow: 0 0 6px rgba(var(--accent-rgb), 0.4);
+}
+.coda-dot.on:hover {
+  opacity: 1;
+  box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.85);
+}
+footer { display: flex; flex-direction: column; align-items: center; }
+
+/* ─── Coda nav-link styling ───────────────────────────────────── */
+.coda-nav a {
+  font-style: italic;
+  letter-spacing: 0.12em !important;
+  opacity: 0.78;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CODA chapter — special layout
+   ═══════════════════════════════════════════════════════════════ */
+
+body.page-coda {
+  background: #050507;
+}
+
+/* The Coda hero is darker, quieter */
+body.page-coda .hero::after {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 50%, transparent 25%, rgba(5, 5, 7, 0.85) 100%),
+    linear-gradient(to bottom, rgba(5, 5, 7, 0.8) 0%, transparent 25%, transparent 70%, rgba(5, 5, 7, 1) 100%);
+}
+
+body.page-coda .hero-title em {
+  color: var(--text);
+  font-style: italic;
+  font-weight: 300;
+}
+
+/* The big scroll-driven canvas */
+.coda-frame {
+  position: relative;
+  width: 100%;
+  margin: 4rem 0;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #04040a;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+}
+.coda-frame canvas { display: block; width: 100%; height: 460px; }
+
+.coda-meter {
+  position: absolute;
+  top: 1rem; left: 1.2rem; right: 1.2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+.coda-meter .era { color: var(--accent); transition: color 0.6s; }
+
+.coda-time-bar {
+  position: absolute;
+  bottom: 1.1rem; left: 1.2rem; right: 1.2rem;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 1px;
+  overflow: hidden;
+}
+.coda-time-bar > div {
+  height: 100%;
+  background: linear-gradient(to right, var(--accent), rgba(var(--accent-rgb), 0.3));
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* Era prose stations — appear in sync with scroll */
+.coda-station {
+  margin: 4rem 0;
+  max-width: 640px;
+}
+.coda-station .era-tag {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.85rem;
+}
+.coda-station h3 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6rem, 3vw, 2.3rem);
+  font-weight: 400;
+  line-height: 1.2;
+  margin-bottom: 1.1rem;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+.coda-station p {
+  font-size: 1rem;
+  color: var(--text-dim);
+  line-height: 1.92;
+  margin-bottom: 1em;
+}
+.coda-station p em { color: var(--accent); font-style: italic; }
+.coda-station p strong { color: var(--text); font-weight: 500; }
+
+.coda-final {
+  text-align: center;
+  margin: 8rem auto 4rem;
+  max-width: 540px;
+}
+.coda-final .glyph {
+  font-family: var(--font-serif);
+  font-size: clamp(4rem, 9vw, 6rem);
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 2rem;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+}
+.coda-final p {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--text-dim);
+  line-height: 1.85;
+}
+.coda-back {
+  display: inline-block;
+  margin-top: 4rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 4px;
+  transition: color 0.2s, border-color 0.2s;
+}
+.coda-back:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* Hidden quote on home until clicked  */
+.hidden-quote {
+  cursor: help;
+  border-bottom: 1px dotted rgba(255, 255, 255, 0.15);
 }

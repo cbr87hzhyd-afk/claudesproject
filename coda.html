@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coda — EMERGENCE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+    .coda-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .coda-eyebrow em { color: var(--accent); font-style: normal; }
+    .coda-prologue {
+      max-width: 640px;
+      margin: 0 auto 2rem;
+      font-family: var(--font-serif);
+      font-size: 1.18rem;
+      line-height: 1.85;
+      color: var(--text-dim);
+      text-align: center;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body class="page-coda">
+
+<nav>
+  <a class="nav-logo" href="index.html">EM<span>ERG</span>ENCE</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Overview</a></li>
+    <li><a href="life.html">Life</a></li>
+    <li><a href="form.html">Form</a></li>
+    <li><a href="patterns.html">Patterns</a></li>
+    <li><a href="mind.html">Mind</a></li>
+    <li><a href="cosmos.html">Cosmos</a></li>
+  </ul>
+</nav>
+
+<main>
+  <section class="hero">
+    <canvas class="hero-canvas" id="coda-hero"></canvas>
+    <div class="hero-content">
+      <p class="coda-eyebrow"><em>∞</em> &nbsp;·&nbsp; Coda</p>
+      <h1 class="hero-title">After the<br><em>last word.</em></h1>
+      <p class="hero-sub">
+        Five chapters told the story of how complexity rises.
+        This one is about how it ends — and why, even at the end,
+        something refuses to be still.
+      </p>
+    </div>
+    <div class="scroll-hint">
+      <span>Begin</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <section class="content">
+
+    <p class="coda-prologue">
+      Scroll slowly. Time will pass.
+    </p>
+
+    <!-- The scroll-driven cosmological time canvas -->
+    <div class="coda-frame" id="coda-frame">
+      <canvas id="coda-canvas"></canvas>
+      <div class="coda-meter">
+        <span id="coda-era" class="era">The First Light</span>
+        <span id="coda-time" style="color:var(--text-muted)">t = 380,000 yr</span>
+      </div>
+      <div class="coda-time-bar"><div id="coda-time-fill"></div></div>
+    </div>
+
+    <!-- Stations of prose, each tied to an era. -->
+    <div class="coda-station" data-era="0">
+      <p class="era-tag">t ≈ 380,000 years</p>
+      <h3>The first transparency</h3>
+      <p>
+        Before this moment, the universe was opaque — a fog of charged plasma
+        through which light could not travel. Then it cooled. Electrons and protons
+        clasped one another and became the first hydrogen. Photons, freed at last,
+        flew outward in every direction, and have been flying ever since. We still feel
+        their faint heat as the cosmic microwave background — a 2.7-degree whisper
+        from the day the universe became <em>visible</em>.
+      </p>
+      <p>
+        Almost nothing was happening yet. And yet everything that would ever happen
+        was already encoded in the slight unevenness of the fog — fluctuations of
+        one part in a hundred thousand, the ghost of a quantum jitter, stretched by
+        inflation into the seeds of every galaxy that would ever be.
+      </p>
+    </div>
+
+    <div class="coda-station" data-era="1">
+      <p class="era-tag">t ≈ 1 billion years</p>
+      <h3>The lit age</h3>
+      <p>
+        Gravity finds the seeds, and pulls. Hydrogen falls together, ignites, and
+        the dark begins to flicker. Stars condense in halos of dark matter; galaxies
+        condense around stars; clusters condense around galaxies. <strong>Every order
+        of structure that will ever exist is born in the first billion years</strong>,
+        and then refined, for ten billion more.
+      </p>
+    </div>
+
+    <div class="coda-station" data-era="2">
+      <p class="era-tag">t ≈ 13.8 billion years &nbsp;·&nbsp; <em>now</em></p>
+      <h3>This sentence</h3>
+      <p>
+        On a planet around a middle-aged star in the disk of a barred spiral galaxy
+        in a small group on the outskirts of a supercluster, a configuration of
+        carbon and water has assembled itself into a reader of words.
+        Improbably, the words exist. Improbably, the reader exists. Improbably, the
+        improbability is being noticed.
+      </p>
+      <p>
+        This is what the universe does, in its middle age: it looks back at itself.
+        The looking is fragile and brief. It is also what the previous five chapters
+        of this journal have been about — the long climb of pattern out of noise,
+        from cellular automata to selves. We are at the apex.
+      </p>
+    </div>
+
+    <div class="coda-station" data-era="3">
+      <p class="era-tag">t ≈ 100 trillion years</p>
+      <h3>The fading</h3>
+      <p>
+        The last star will form, and then the last stars will burn out.
+        The galaxies will cool from white to red to nothing.
+        The night sky, on whatever planet still exists, will be empty of points of light
+        for the first time in a hundred trillion years. Whoever is watching will not be
+        the kind of thing that can watch in any way we would recognize.
+      </p>
+      <p>
+        Stelliferous, the astronomers call our era — the time of stars.
+        It is, on a long enough timeline, a brief flowering.
+      </p>
+    </div>
+
+    <div class="coda-station" data-era="4">
+      <p class="era-tag">t ≈ 10⁴⁰ years</p>
+      <h3>The slow exhalation</h3>
+      <p>
+        Matter itself begins to decay. Protons unravel.
+        The cold remnants of stars dissolve. Black holes — once the apex predators
+        of structure — radiate themselves slowly into the void, one Hawking photon
+        at a time. The largest among them outlive everything else by an absurd margin,
+        and then they too are gone.
+      </p>
+      <p>
+        The universe is now what it most wants to be: <em>empty, smooth, and warm
+        only in the sense that nothing is colder.</em> This is the state called
+        <strong>heat death</strong> — not because anything is hot, but because there
+        are no longer any differences from which heat could ever again flow.
+      </p>
+    </div>
+
+    <div class="coda-station" data-era="5">
+      <p class="era-tag">t → ∞</p>
+      <h3>And yet</h3>
+      <p>
+        And yet — entropy is not certainty. Entropy is statistics.
+        Given infinite time, in a universe of infinite duration, the rare becomes the
+        inevitable. A region of vacuum, by random fluctuation, might briefly assemble
+        itself into a galaxy, a brain, a reader, a sentence. It will dissolve again
+        in a moment of cosmic time. But it will have happened.
+      </p>
+      <p>
+        The physicists call these flickerings <em>Boltzmann brains</em>, and worry that
+        there might be more of them than there are people like you. There may be.
+        It is a strange thought to hold: that you are either the apex of a thirteen-billion-year
+        ascent, or a momentary curl of order in a much longer dark.
+      </p>
+      <p>
+        The truth, perhaps, is that the difference does not matter. <strong>Pattern is
+        always temporary.</strong> What is unusual is not that it ends, but that it is here at all.
+      </p>
+    </div>
+
+    <div class="coda-final">
+      <div class="glyph">·</div>
+      <p>
+        More is different.<br>
+        More is, also, briefly.<br>
+        And while it lasts — it is everything.
+      </p>
+      <a class="coda-back" href="index.html">↩ return to the beginning</a>
+    </div>
+
+  </section>
+</main>
+
+<footer>
+  <p class="footer-logo">EMERGENCE</p>
+  <p>An interactive journal · ∞</p>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   CODA — quiet hero starfield
+   ═══════════════════════════════════════════════════════════════ */
+(function () {
+  const c = document.getElementById('coda-hero');
+  if (!c) return;
+  const x = c.getContext('2d');
+  function fit() { c.width = c.offsetWidth; c.height = c.offsetHeight; }
+  fit();
+  window.addEventListener('resize', fit);
+
+  const N = 220;
+  const stars = Array.from({ length: N }, () => ({
+    x: Math.random(),
+    y: Math.random(),
+    r: 0.4 + Math.random() * 1.4,
+    ph: Math.random() * Math.PI * 2,
+    sp: 0.0006 + Math.random() * 0.0014,    // very slow drift
+    th: Math.random() * Math.PI * 2,
+    bri: 0.25 + Math.random() * 0.6
+  }));
+
+  function tick(ts) {
+    const W = c.width, H = c.height;
+    x.fillStyle = 'rgba(5, 5, 7, 0.35)';
+    x.fillRect(0, 0, W, H);
+    const t = ts * 0.001;
+    for (const s of stars) {
+      // Drift in a slow direction
+      s.x = (s.x + Math.cos(s.th) * s.sp + 1) % 1;
+      s.y = (s.y + Math.sin(s.th) * s.sp + 1) % 1;
+      const tw = 0.5 + 0.5 * Math.sin(t * 0.6 + s.ph);
+      const a  = s.bri * tw;
+      x.beginPath();
+      x.arc(s.x * W, s.y * H, s.r, 0, Math.PI * 2);
+      x.fillStyle = `rgba(220, 225, 240, ${a * 0.85})`;
+      x.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   CODA — scroll-driven cosmological time canvas.
+   Particle field whose configuration is a function of time t∈[0,1].
+   ═══════════════════════════════════════════════════════════════ */
+(function () {
+  const frame  = document.getElementById('coda-frame');
+  const canvas = document.getElementById('coda-canvas');
+  const ctx    = canvas.getContext('2d');
+  const eraEl  = document.getElementById('coda-era');
+  const timeEl = document.getElementById('coda-time');
+  const fillEl = document.getElementById('coda-time-fill');
+
+  let W = 0, H = 0;
+
+  function resize() {
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    W = canvas.width; H = canvas.height;
+    seed();
+  }
+
+  // Particle field
+  const N = 720;
+  const P = new Array(N);
+  function seed() {
+    for (let i = 0; i < N; i++) {
+      P[i] = {
+        x:  Math.random() * W,
+        y:  Math.random() * H,
+        // Destiny: each particle eventually drifts to its own attractor cluster
+        ax: Math.random(),                      // attractor x normalized
+        ay: Math.random(),                      // attractor y normalized
+        h:  185 + Math.random() * 90,           // hue base
+        s:  0.4 + Math.random() * 0.6,          // size factor
+        ph: Math.random() * Math.PI * 2,        // phase for twinkle
+        // For galaxy phase: cluster id
+        cl: Math.floor(Math.random() * 12),
+      };
+    }
+    // Cluster centers in normalized coords
+    clusters.length = 0;
+    for (let c = 0; c < 12; c++) {
+      clusters.push({
+        x: 0.1 + Math.random() * 0.8,
+        y: 0.15 + Math.random() * 0.7,
+        h: 200 + Math.random() * 110
+      });
+    }
+  }
+  const clusters = [];
+
+  // Time scrubber: t in [0,1] driven by scroll position over the frame
+  let t = 0, target = 0;
+
+  function updateTime() {
+    const r = frame.getBoundingClientRect();
+    const vh = window.innerHeight;
+    // Begin once the frame top crosses near the bottom; finish well before it leaves
+    const start = vh * 0.85;
+    const end   = -r.height + vh * 0.15;
+    const span  = start - end;
+    const raw   = (start - r.top) / span;
+    target = Math.max(0, Math.min(1, raw));
+  }
+  window.addEventListener('scroll', updateTime, { passive: true });
+  window.addEventListener('resize', () => { resize(); updateTime(); });
+
+  // Era labels and time stamps
+  const ERAS = [
+    { upto: 0.10, name: 'The Plasma',         time: 't ≈ 380,000 yr' },
+    { upto: 0.20, name: 'First Light',        time: 't ≈ 200 million yr' },
+    { upto: 0.35, name: 'The Lit Age',        time: 't ≈ 1 billion yr' },
+    { upto: 0.50, name: 'Now',                time: 't = 13.8 billion yr' },
+    { upto: 0.65, name: 'The Long Twilight',  time: 't ≈ 100 trillion yr' },
+    { upto: 0.80, name: 'Degenerate Era',     time: 't ≈ 10²⁰ yr' },
+    { upto: 0.92, name: 'The Black Hole Era', time: 't ≈ 10³⁰ yr' },
+    { upto: 0.985, name: 'Heat Death',         time: 't ≈ 10⁴⁰ yr' },
+    { upto: 1.001, name: 'A Fluctuation',      time: 't → ∞' },
+  ];
+
+  function eraFor(time) {
+    for (const e of ERAS) if (time <= e.upto) return e;
+    return ERAS[ERAS.length - 1];
+  }
+
+  // ── A drawable word in particles, used for the Boltzmann moment ──
+  // Pre-render a tiny offscreen "still" and sample its pixels into target points.
+  let wordPoints = null;
+  function buildWord() {
+    const off = document.createElement('canvas');
+    off.width = 600; off.height = 140;
+    const c = off.getContext('2d');
+    c.fillStyle = '#fff';
+    c.font = '300 110px "Cormorant Garamond", Georgia, serif';
+    c.textAlign = 'center';
+    c.textBaseline = 'middle';
+    c.fillText('still', off.width / 2, off.height / 2);
+    const img = c.getImageData(0, 0, off.width, off.height).data;
+    const pts = [];
+    const stride = 6;
+    for (let y = 0; y < off.height; y += stride)
+      for (let x = 0; x < off.width; x += stride) {
+        if (img[(y * off.width + x) * 4 + 3] > 80) pts.push([x / off.width, y / off.height]);
+      }
+    wordPoints = pts;
+  }
+  buildWord();
+
+  // ── Render ───────────────────────────────────────────────────
+  function render() {
+    // Smooth t toward target
+    t += (target - t) * 0.08;
+    const era = eraFor(t);
+    eraEl.textContent  = era.name;
+    timeEl.textContent = era.time;
+    fillEl.style.width = (t * 100).toFixed(2) + '%';
+
+    // Background color shifts with era — warm in the lit age, cold elsewhere.
+    let bgR = 5, bgG = 5, bgB = 10;
+    if (t < 0.10) { bgR = 22; bgG = 6; bgB = 8; }    // plasma red-warm
+    else if (t < 0.5) { bgR = 5; bgG = 5; bgB = 10; }
+    else if (t < 0.7) { bgR = 8; bgG = 4; bgB = 8; } // dimming
+    else { bgR = 2; bgG = 2; bgB = 4; }              // black
+
+    ctx.fillStyle = `rgba(${bgR},${bgG},${bgB},${t < 0.05 ? 0.32 : 0.55})`;
+    ctx.fillRect(0, 0, W, H);
+
+    const time = performance.now() * 0.001;
+
+    // Phase-by-phase positioning
+    for (let i = 0; i < N; i++) {
+      const p = P[i];
+      let tx, ty, alpha, size, hue, sat, lit;
+
+      if (t < 0.10) {
+        // PLASMA: dense uniform glow with hot wobble
+        const w = 2 + Math.sin(p.ph + time * 4) * 1.5;
+        tx = p.x + (Math.random() - 0.5) * w * 0.4;
+        ty = p.y + (Math.random() - 0.5) * w * 0.4;
+        const u = t / 0.10;
+        alpha = 0.5 - u * 0.2;
+        size  = 1.4;
+        hue   = 18 + Math.sin(p.ph) * 10;
+        sat   = 90; lit = 60 - u * 10;
+        p.x = tx; p.y = ty;
+      } else if (t < 0.35) {
+        // CONDENSATION: drift toward cluster centers
+        const u = (t - 0.10) / 0.25;            // 0..1
+        const c = clusters[p.cl];
+        const cx = c.x * W, cy = c.y * H;
+        const k = 0.018 + u * 0.05;
+        p.x += (cx + Math.cos(p.ph + time * 0.3) * 50 - p.x) * k;
+        p.y += (cy + Math.sin(p.ph + time * 0.3) * 50 - p.y) * k;
+        alpha = 0.45 + u * 0.4;
+        size  = 1 + u * 0.6;
+        hue   = c.h;
+        sat   = 70; lit = 60 + u * 10;
+      } else if (t < 0.55) {
+        // NOW: full structure, soft swirl
+        const c = clusters[p.cl];
+        const cx = c.x * W, cy = c.y * H;
+        const dx = p.x - cx, dy = p.y - cy;
+        const d = Math.hypot(dx, dy) || 1;
+        // Slow Keplerian swirl
+        const ang = Math.atan2(dy, dx) + 0.0025 / Math.sqrt(d) * 60;
+        const r = d + Math.sin(time * 0.5 + p.ph) * 0.3;
+        p.x = cx + Math.cos(ang) * r;
+        p.y = cy + Math.sin(ang) * r;
+        alpha = 0.85;
+        size  = 1.6 + Math.sin(p.ph + time) * 0.25;
+        hue   = c.h;
+        sat   = 70; lit = 70;
+      } else if (t < 0.78) {
+        // DIMMING: stars cool, drift apart slightly
+        const u = (t - 0.55) / 0.23;
+        const c = clusters[p.cl];
+        const cx = c.x * W, cy = c.y * H;
+        // Push outward gently
+        p.x += (p.x - cx) * 0.0015;
+        p.y += (p.y - cy) * 0.0015;
+        alpha = (1 - u) * 0.7;
+        size  = 1.2 + (1 - u) * 0.4;
+        hue   = c.h - u * 30;                   // shift toward red
+        sat   = 60 - u * 20; lit = 55 - u * 25;
+      } else if (t < 0.92) {
+        // BLACK HOLE ERA: very few sparse, low light points
+        if (i % 22 !== 0) { continue; }         // most particles dark
+        const u = (t - 0.78) / 0.14;
+        alpha = (1 - u) * 0.4;
+        size  = 1.4;
+        hue   = 18; sat = 80; lit = 45 - u * 20;
+      } else if (t < 0.985) {
+        // HEAT DEATH: nearly empty, single faint drift
+        if (i % 80 !== 0) continue;
+        const u = (t - 0.92) / 0.065;
+        alpha = (1 - u) * 0.35;
+        size  = 1.0 - u * 0.6;
+        hue   = 220; sat = 30; lit = 55;
+      } else {
+        // BOLTZMANN FLUCTUATION: particles briefly form the word "still"
+        const wp = wordPoints;
+        if (!wp || !wp.length) continue;
+        const u = (t - 0.985) / 0.015;          // 0..1 across the moment
+        const which = i % wp.length;
+        const [nx, ny] = wp[which];
+        // Place around the canvas center with a slight margin
+        const wbx = W * 0.18, wby = H * 0.32, wbw = W * 0.64, wbh = H * 0.36;
+        const tx2 = wbx + nx * wbw, ty2 = wby + ny * wbh;
+        const k = 0.18;
+        p.x += (tx2 - p.x) * k;
+        p.y += (ty2 - p.y) * k;
+        // Brightens then dims — a curve that peaks at u≈0.6
+        const brightness = Math.sin(Math.min(1, u) * Math.PI);
+        alpha = 0.05 + 0.85 * brightness;
+        size  = 1.2 + brightness * 0.7;
+        hue   = 220 - brightness * 40;
+        sat   = 8;  lit = 92;
+      }
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, size * p.s, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${hue}, ${sat}%, ${lit}%, ${alpha})`;
+      ctx.fill();
+    }
+
+    requestAnimationFrame(render);
+  }
+
+  // Boot
+  window.addEventListener('load', () => {
+    resize();
+    updateTime();
+    render();
+  });
+})();
+</script>
+<script src="js/sound.js"></script>
+<script src="js/site.js"></script>
+</body>
+</html>

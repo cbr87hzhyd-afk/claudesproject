@@ -453,7 +453,7 @@ document.getElementById('rd-brush').addEventListener('input', function() {
   brushSize = +this.value;
 });
 
-document.querySelectorAll('.param-card').forEach(card => {
+document.querySelectorAll('.param-card').forEach((card, idx) => {
   card.addEventListener('click', () => {
     document.querySelectorAll('.param-card').forEach(c => c.classList.remove('active'));
     card.classList.add('active');
@@ -463,8 +463,22 @@ document.querySelectorAll('.param-card').forEach(card => {
     document.getElementById('rd-k').textContent = rdK.toFixed(4);
     document.getElementById('rd-regime').textContent = card.querySelector('.param-name').textContent;
     rdSeed();
+    if (window.EM_SOUND) window.EM_SOUND.chordPing(idx, 0.05, 1.6);
   });
 });
+
+// Phase-transition crossing: ping when Ising crosses T_c (rising or falling).
+let lastTcSide = null;
+const _origRebuild = rebuildExpTable;
+rebuildExpTable = function () {
+  _origRebuild();
+  const TC = 2.269;
+  const side = isingT < TC ? 'lo' : 'hi';
+  if (lastTcSide && side !== lastTcSide && window.EM_SOUND) {
+    window.EM_SOUND.chordPing(side === 'lo' ? 0 : 3, 0.07, 2.4);
+  }
+  lastTcSide = side;
+};
 
 rdDisplay.addEventListener('mousedown', e => { rdPainting = true; rdPaint(e.offsetX, e.offsetY); });
 rdDisplay.addEventListener('mousemove', e => { if (rdPainting) rdPaint(e.offsetX, e.offsetY); });
@@ -686,6 +700,7 @@ window.addEventListener('resize', () => {
   heroCanvas.height = heroCanvas.offsetHeight;
 });
 </script>
+<script src="js/sound.js"></script>
 <script src="js/site.js"></script>
 </body>
 </html>
